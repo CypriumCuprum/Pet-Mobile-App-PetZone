@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#6CB96B"/> <!-- Màu nền -->
+    <size android:width="200dp" android:height="100dp"/> <!-- Kích thước -->
+<!--    <stroke android:width="2dp" android:color="#000000"/> &lt;!&ndash; Viền &ndash;&gt;-->
+    <corners android:topLeftRadius="100dp" android:topRightRadius="100dp"/>
+</shape>
