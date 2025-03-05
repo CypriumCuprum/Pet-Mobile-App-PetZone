@@ -12,7 +12,7 @@
     <color name="text_light_green">#5CB15A</color> <!-- Màu chữ màu xanh nhẹ -->
 
     <!-- Màu background -->
-    <color name="bg_main_color">#6CB96B</color>  <!-- Màu chính cho các frame, shape -->
+    <color name="bg_main_color">#6BB86A</color>  <!-- Màu chính cho các frame, shape -->
     <color name="bg_white">#FFFFFF</color> <!-- Màu nền trắng -->
     <color name="bg_grey">#D9D9D9</color> <!-- Màu nền xám -->
     <color name="bg_gender_box">#F576AC</color> <!-- Màu box hiển thị giới tính trong profile-->
