@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PetApp</string>
+    <string name="Start_App_Quote"> \"The love for all living creatures is the most noble attribute of man.\" </string>
+    <string name="login">Login</string>
 </resources>
