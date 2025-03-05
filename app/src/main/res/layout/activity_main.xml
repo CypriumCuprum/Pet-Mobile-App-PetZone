@@ -46,7 +46,7 @@
         android:id="@+id/textView"
         android:layout_width="389dp"
         android:layout_height="64dp"
-        android:fontFamily="@font/fredoka_semibold"
+        android:fontFamily="@font/fr"
         android:text="@string/Start_App_Quote"
         android:textAlignment="center"
         android:textColor="@color/text_black"
