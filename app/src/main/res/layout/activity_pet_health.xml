@@ -10,8 +10,10 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:gravity="center_vertical"
             style="@style/CustomTopBarStyle"
-            android:layout_gravity="center"
             >
             <TextView
                 android:id="@+id/toolbar_title"
@@ -36,7 +38,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <ImageView
                         android:id="@+id/pet_image"
                         android:layout_width="match_parent"
