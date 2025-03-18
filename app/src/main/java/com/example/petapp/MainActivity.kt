@@ -68,10 +68,10 @@ class MainActivity : AppCompatActivity() {
 //                    selectedFragment = GPSFragment()
 //                    title = "GPS"
 //                }
-//                R.id.nav_shop -> {
-//                    selectedFragment = ShopFragment()
-//                    title = "Shop"
-//                }
+                R.id.nav_shop -> {
+                    selectedFragment = Shop()
+                    title = "Shop"
+                }
 //                R.id.nav_profile -> {
 //                    selectedFragment = ProfileFragment()
 //                    title = "Profile"

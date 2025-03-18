@@ -77,5 +77,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttondev"
+        android:layout_width="310sp"
+        android:layout_height="58sp"
+        android:layout_marginTop="212dp"
+        android:backgroundTint="@color/bg_main_color"
+        android:fontFamily="@font/fredoka_medium"
+        android:text="DEV"
+        android:textSize="30sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

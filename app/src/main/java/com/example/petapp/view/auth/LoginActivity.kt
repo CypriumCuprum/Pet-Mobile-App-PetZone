@@ -26,5 +26,6 @@ class LoginActivity : AppCompatActivity() {
             val intentmain = Intent(this, MainActivity::class.java)
             startActivity(intentmain)
         }
+        val button_dev = findViewById<Button>()
     }
 }
