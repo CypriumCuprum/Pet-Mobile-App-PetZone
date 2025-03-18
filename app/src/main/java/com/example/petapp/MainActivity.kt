@@ -17,6 +17,7 @@ import com.example.petapp.view.shop.Shop
 import androidx.fragment.app.Fragment
 import com.example.petapp.view.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
