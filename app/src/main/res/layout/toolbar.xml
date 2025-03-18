@@ -22,6 +22,7 @@
             android:layout_marginStart="20dp"
             android:fontFamily="@font/fredoka_semibold"
             android:textSize="20sp"
+            android:textColor="@color/bg_white"
             android:layout_centerInParent="true"/>
 
         <ImageView

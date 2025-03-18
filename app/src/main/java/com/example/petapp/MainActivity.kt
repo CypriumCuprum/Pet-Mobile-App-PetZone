@@ -8,8 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import com.example.petapp.view.shop.Shop
 import androidx.fragment.app.Fragment
 import com.example.petapp.view.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
