@@ -14,8 +14,11 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.example.petapp.view.shop.Shop
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var bottomNavigationView: BottomNavigationView;
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             toolbarRightIcon.setImageResource(R.drawable.cart)
             val fragment = Shop()
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment) // Thay thế Fragment hiện tại
+                .replace(R.id.frame_container, fragment) // Thay thế Fragment hiện tại
                 .addToBackStack(null) // Cho phép quay lại Fragment trước đó
                 .commit()
         })
