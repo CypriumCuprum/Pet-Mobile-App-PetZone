@@ -14,39 +14,100 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.example.petapp.view.shop.Shop
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
+import com.example.petapp.view.HomeFragment
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bottomNavigationView: BottomNavigationView;
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var toolbarTitle: TextView
+    private var lastSelectedItem: View? = null
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        // Khởi tạo các view
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        toolbarTitle = findViewById(R.id.toolbar_title)
+
         // Thiết lập để nội dung vẽ dưới status bar
         window.setDecorFitsSystemWindows(false)
+
         // Làm status bar trong suốt
         window.statusBarColor = Color.TRANSPARENT
+
+        // Xử lý insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Thiết lập tiêu đề mặc định
+        toolbarTitle.text = "Home"
 
-        val toolbarTitle = findViewById<TextView>(R.id.toolbar_title)
-        toolbarTitle.setText(R.string.home)
+        // Thiết lập listener cho bottom navigation
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            // Xác định fragment và tiêu đề dựa trên item được chọn
+            val selectedFragment: Fragment
+            val title: String
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    selectedFragment = HomeFragment()
+                    title = "Home"
+                }
+//                R.id.nav_community -> {
+//                    selectedFragment = CommunityFragment()
+//                    title = "Community"
+//                }
+//                R.id.nav_gps -> {
+//                    selectedFragment = GPSFragment()
+//                    title = "GPS"
+//                }
+//                R.id.nav_shop -> {
+//                    selectedFragment = ShopFragment()
+//                    title = "Shop"
+//                }
+//                R.id.nav_profile -> {
+//                    selectedFragment = ProfileFragment()
+//                    title = "Profile"
+//                }
+                else -> {
+                    selectedFragment = HomeFragment()
+                    title = "Home"
+                }
+            }
 
-        val toolbarRightIcon = findViewById<ImageView>(R.id.right_icon_toolbar)
-        toolbarRightIcon.setOnClickListener({
-            toolbarRightIcon.setImageResource(R.drawable.cart)
-            val fragment = Shop()
+            // Cập nhật tiêu đề toolbar
+            toolbarTitle.text = title
+
+            // Đặt hiệu ứng cho item được chọn
+            val itemView = bottomNavigationView.findViewById<BottomNavigationItemView>(item.itemId)
+
+            // Reset background cho item trước đó (nếu có)
+            lastSelectedItem?.background = null
+
+            // Đặt background cho item mới được chọn
+            itemView.setBackgroundResource(R.drawable.nav_selected_menu)
+
+            // Cập nhật item được chọn
+            lastSelectedItem = itemView
+
+            // Thay thế fragment
             supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_container, fragment) // Thay thế Fragment hiện tại
-                .addToBackStack(null) // Cho phép quay lại Fragment trước đó
+                .replace(R.id.frame_container, selectedFragment)
                 .commit()
-        })
 
+            true
+        }
+
+        // Chọn item Home làm mặc định khi khởi động ứng dụng
+        if (savedInstanceState == null) {
+            bottomNavigationView.selectedItemId = R.id.nav_home
+        }
     }
 
 }
