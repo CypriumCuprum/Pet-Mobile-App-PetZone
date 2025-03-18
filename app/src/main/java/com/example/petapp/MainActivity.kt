@@ -1,6 +1,7 @@
 package com.example.petapp
 
 import android.graphics.Color
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -16,7 +17,6 @@ import com.example.petapp.view.shop.Shop
 import androidx.fragment.app.Fragment
 import com.example.petapp.view.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         // Thiết lập tiêu đề mặc định
         toolbarTitle.text = "Home"
 
@@ -110,4 +109,5 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationView.selectedItemId = R.id.nav_home
         }
     }
+
 }
