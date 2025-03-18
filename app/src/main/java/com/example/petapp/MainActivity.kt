@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         toolbarTitle = findViewById(R.id.toolbar_title)
 
         // Thiết lập để nội dung vẽ dưới status bar
-        window.setDecorFitsSystemWindows(false)
+//        window.setDecorFitsSystemWindows(false)
 
         // Làm status bar trong suốt
         window.statusBarColor = Color.TRANSPARENT
