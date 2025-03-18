@@ -7,21 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".view.petHealth.PetHealth"
         android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/CustomTopBarStyle"
-            android:layout_gravity="center"
-            >
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pet Health"
-                style="@style/TopBarTitleStyle"
-                />
-        </androidx.appcompat.widget.Toolbar>
-
+        <include layout="@layout/toolbar"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -36,7 +22,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <ImageView
                         android:id="@+id/pet_image"
                         android:layout_width="match_parent"

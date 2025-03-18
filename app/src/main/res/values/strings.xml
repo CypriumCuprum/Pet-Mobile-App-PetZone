@@ -6,4 +6,5 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="charles_darwin">Charles Darwin</string>
+    <string name="toolbar_title">Pet App</string>
 </resources>
