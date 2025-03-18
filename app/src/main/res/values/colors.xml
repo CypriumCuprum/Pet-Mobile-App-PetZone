@@ -25,5 +25,9 @@
 
     <!-- Màu chữ cho các button -->
 
+    <!-- Màu viền -->
+    <color name="border_color_reminder">#AAAAAA</color>
+    <color name="border_color_button_reminder">#256923</color>
+
 
 </resources>

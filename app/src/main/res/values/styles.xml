@@ -45,4 +45,8 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="GreenSwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="colorControlActivated">#4CAF50</item>
+    </style>
+
 </resources>
