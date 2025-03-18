@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_main_color"
+    android:padding="15dp"
     >
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/left_icon_toolbar"
+            android:src="@drawable/left_arrow"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar_title"
+            android:text="@string/toolbar_title"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/fredoka_semibold"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/right_icon_toolbar"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/bell_notification"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>
