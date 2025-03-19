@@ -59,5 +59,6 @@
         <item name="android:fontFamily">@font/fredoka_medium</item> <!-- Font chữ -->
     </style>
 
+    
 
 </resources>
