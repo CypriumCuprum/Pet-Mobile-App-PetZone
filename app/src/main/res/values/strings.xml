@@ -109,4 +109,5 @@
     <string name="pet_name">Yellow</string>
     <string name="diary">Diary</string>
     <string name="pet_information">Yellow\'s Information</string>
+    <string name="pet_status">Yellow\'s Status</string>
 </resources>
