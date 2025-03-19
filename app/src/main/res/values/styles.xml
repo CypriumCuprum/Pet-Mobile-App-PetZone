@@ -21,12 +21,9 @@
 
     <style name="CustomTopBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
         <item name="android:background">@color/bg_main_color</item>
-        <item name="titleTextAppearance">@style/TopBarTitleStyle</item>
         <item name="navigationIcon">@drawable/left_arrow</item>
         <item name="menu">@menu/topbar_menu</item>
         <item name="android:elevation">4dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">90dp</item>
     </style>
 
     <style name="TopBarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
@@ -44,5 +41,23 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
+
+<!--    <style name="BottomNavTextAppearance" parent="TextAppearance.MaterialComponents.Caption">-->
+<!--        <item name="android:fontFamily">@font/font_for_bottom_nav</item>-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--        <item name="android:textColor">@color/text_white</item> &lt;!&ndash; Màu chữ &ndash;&gt;-->
+<!--    </style>-->
+    <style name="CustomNavigationBarStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/bg_main_color</item>
+        <item name="itemIconTint">@color/text_white</item>
+        <item name="itemTextColor">@color/text_white</item>
+        <item name="fontFamily">@font/font_for_bottom_nav</item>
+    </style>
+    <style name="SearchViewTextStyle">
+        <item name="android:textColor">#FF0000</item> <!-- Màu chữ đỏ -->
+        <item name="android:textColorHint">#868689</item> <!-- Màu gợi ý xám -->
+        <item name="android:fontFamily">@font/fredoka_medium</item> <!-- Font chữ -->
+    </style>
+
 
 </resources>

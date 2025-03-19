@@ -3,10 +3,12 @@ package com.example.petapp
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.view.View
 import androidx.annotation.RequiresApi
 
 class MainActivity : AppCompatActivity() {
