@@ -104,6 +104,13 @@
     <string name="profile_bottom_nav">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="search_text_open">Enter key word</string>
+    <string name="pet_breed">Pomeranian</string>
+    <string name="pet_name">Yellow</string>
+    <string name="diary">Diary</string>
+    <string name="pet_information">Yellow\'s Information</string>
+    <string name="pet_status">Yellow\'s Status</string>
     <string name="sign_up">Sign up</string>
     <string name="fill_your_username">example@gmail.com</string>
     <string name="example_password">example@123456</string>
