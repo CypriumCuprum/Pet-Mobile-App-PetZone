@@ -22,10 +22,16 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val button_login = findViewById<Button>(R.id.buttonLogin)
-        button_login.setOnClickListener{
+        button_login.setOnClickListener {
+            val intentmain = Intent(this, DoingLoginActivity::class.java)
+            startActivity(intentmain)
+        }
+
+        //Test o day
+        val button_dev = findViewById<Button>(R.id.buttonRegister)
+        button_dev.setOnClickListener {
             val intentmain = Intent(this, MainActivity::class.java)
             startActivity(intentmain)
         }
-        val button_dev = findViewById<Button>()
     }
 }
