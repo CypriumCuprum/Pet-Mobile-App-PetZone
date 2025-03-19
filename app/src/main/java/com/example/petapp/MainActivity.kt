@@ -17,6 +17,7 @@ import com.example.petapp.view.shop.Shop
 import androidx.fragment.app.Fragment
 import com.example.petapp.view.HomeFragment
 import com.example.petapp.reminder.Reminder1Fragment
+import com.example.petapp.reminder.Add_reminderFragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         toolbarTitle = findViewById(R.id.toolbar_title)
 
         // Thiết lập để nội dung vẽ dưới status bar
-        window.setDecorFitsSystemWindows(false)
+//        window.setDecorFitsSystemWindows(false)
 
         // Làm status bar trong suốt
         window.statusBarColor = Color.TRANSPARENT
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_community -> {
-                    selectedFragment = Reminder1Fragment()
+                    selectedFragment = Add_reminderFragment()
                     title = "Reminder"
                 }
 //                R.id.nav_community -> {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.petapp.R
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class Reminder1Fragment : Fragment() {
 
@@ -39,6 +40,17 @@ class Reminder1Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        val view  = inflater.inflate(R.layout.fragment_reminder1,container,false)
+        val mySwitch = view.findViewById<SwitchMaterial>(R.id.switch_feeding1)
+
+        // lắng nghe switch
+        mySwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                // The switch is enabled/checked
+            } else {
+                // The switch is disabled
+            }
+        }
         return inflater.inflate(R.layout.fragment_reminder1, container, false)
     }
 }
