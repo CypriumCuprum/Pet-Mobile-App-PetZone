@@ -10,11 +10,10 @@ android {
 
     defaultConfig {
         applicationId = "com.example.petapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -47,5 +46,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.caverock:androidsvg-aar:1.4")
+//    implementation("com.google.android.material:material:1.12.0")
 }
