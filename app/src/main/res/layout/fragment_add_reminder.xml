@@ -357,6 +357,7 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/selectTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:strokeColor="@color/bg_grey"
@@ -390,6 +391,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/selectDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
@@ -424,6 +426,7 @@
 
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/selectRepeat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
