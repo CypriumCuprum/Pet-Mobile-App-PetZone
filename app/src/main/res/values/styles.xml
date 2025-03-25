@@ -33,9 +33,12 @@
 
     <style name="CustomTopBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
         <item name="android:background">@color/bg_main_color</item>
+        <item name="titleTextAppearance">@style/TopBarTitleStyle</item>
         <item name="navigationIcon">@drawable/left_arrow</item>
         <item name="menu">@menu/topbar_menu</item>
         <item name="android:elevation">4dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">90dp</item>
     </style>
 
     <style name="TopBarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
@@ -72,5 +75,9 @@
     </style>
 
     
+
+    <style name="GreenSwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="colorControlActivated">#4CAF50</item>
+    </style>
 
 </resources>
