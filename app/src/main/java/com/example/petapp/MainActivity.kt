@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.example.petapp.view.HomeFragment
 import com.example.petapp.view.reminder.Reminder1Fragment
 import com.example.petapp.view.reminder.Add_reminderFragment
+import com.example.petapp.view.petHealth.PetHealth
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -79,10 +80,10 @@ class MainActivity : AppCompatActivity() {
                     selectedFragment = Shop()
                     title = "Shop"
                 }
-//                R.id.nav_profile -> {
-//                    selectedFragment = ProfileFragment()
-//                    title = "Profile"
-//                }
+                R.id.nav_profile -> {
+                    selectedFragment = PetHealth()
+                    title = "Profile"
+                }
                 else -> {
                     selectedFragment = HomeFragment()
                     title = "Home"
