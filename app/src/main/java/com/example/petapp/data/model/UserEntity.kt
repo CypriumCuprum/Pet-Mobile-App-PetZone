@@ -34,7 +34,7 @@ data class User(
 
     // Optional: use this to track sync status locally
     @ColumnInfo(name = "is_synced")
-    val isSynced: Boolean = false
+    val isSynced: Boolean = false,
 
     @ColumnInfo(name = "last_sync")
     val lastSync: String? = null  // use ISO 8601 format for sync
