@@ -5,48 +5,33 @@ import java.util.*
 import java.time.Instant
 
 @Entity(
-    tableName = "pet",
+    tableName = "medical_report",
     foreignKeys = [
         ForeignKey(
-            entity = UserEntity::class,
+            entity = PetEntity::class,
             parentColumns = ["id"],
-            childColumns = ["userid"],
+            childColumns = ["petid"],
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["userid"])]
+    indices = [Index(value = ["petid"])]
 )
-data class PetEntity(
+data class MedicalReportEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: String = UUID.randomUUID().toString(),
 
-    @ColumnInfo(name = "name")
-    val name: String,
+    @ColumnInfo(name = "title")
+    val title: String,
 
-    @ColumnInfo(name = "breed_name")
-    val breedName: String,
+    @ColumnInfo(name = "hospital")
+    val hospital: String,
 
-    @ColumnInfo(name = "gender")
-    val gender: String,
+    @ColumnInfo(name = "veterinarian")
+    val veterinarian: String,
 
-    @ColumnInfo(name = "birth_date")
-    val birthDate: String?, // or use `Date` with type converter
-
-    @ColumnInfo(name = "color")
-    val color: String? = null,
-
-    @ColumnInfo(name = "height")
-    val height: Float,
-
-    @ColumnInfo(name = "weight")
-    val weight: Float,
-
-    @ColumnInfo(name = "image_url")
-    val imageUrl: String? = null,
-
-    @ColumnInfo(name = "note")
-    val note: String? = null,
+    @ColumnInfo(name = "description")
+    val description: String,
 
     @ColumnInfo(name = "created_at")
     val createdAt: String = Instant.now().toString(),  // Tự động dùng ISO 8601 UTC
@@ -54,8 +39,8 @@ data class PetEntity(
     @ColumnInfo(name = "updated_at")
     val updatedAt: String = Instant.now().toString(),  // Gán tạm, sẽ cập nhật khi sửa
 
-    @ColumnInfo(name = "userid")
-    val userId: String,
+    @ColumnInfo(name = "petid")
+    val petId: String,
 
     // Optional: use this to track sync status locally
     @ColumnInfo(name = "is_synced")
