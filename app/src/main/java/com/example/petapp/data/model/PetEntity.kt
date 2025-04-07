@@ -7,7 +7,7 @@ import java.util.*
     tableName = "pet",
     foreignKeys = [
         ForeignKey(
-            entity = UserEntity::class,
+            entity = User::class,
             parentColumns = ["id"],
             childColumns = ["userid"],
             onDelete = ForeignKey.CASCADE
@@ -47,7 +47,7 @@ data class Pet(
     @ColumnInfo(name = "note")
     val note: String? = null,
 
-    @ColumnInfo(name = "created_at", updatable = false)
+    @ColumnInfo(name = "created_at")
     val createdAt: String,  // use ISO 8601 format for sync
 
     @ColumnInfo(name = "updated_at")
