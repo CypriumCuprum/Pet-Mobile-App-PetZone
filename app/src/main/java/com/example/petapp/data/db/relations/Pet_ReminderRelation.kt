@@ -1,11 +1,11 @@
 package com.example.petapp.data.db.relations
 import androidx.room.*
-import com.example.petapp.data.model.Pet
+import com.example.petapp.data.model.PetEntity
 import com.example.petapp.data.model.Pet_ReminderEntity
 import com.example.petapp.data.model.ReminderEntity
 
 data class PetWithReminders(
-    @Embedded val pet: Pet,
+    @Embedded val pet: PetEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "id",
@@ -30,5 +30,5 @@ data class ReminderWithPets(
             entityColumn = "pet_id"
         )
     )
-    val pets: List<Pet>
+    val pets: List<PetEntity>
 )

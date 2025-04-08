@@ -6,7 +6,7 @@ import java.util.*
     tableName ="pet_reminder",
     foreignKeys = [
         ForeignKey(
-            entity = Pet::class,
+            entity = PetEntity::class,
             parentColumns = ["id"],
             childColumns = ["petid"],
             onDelete = ForeignKey.CASCADE
