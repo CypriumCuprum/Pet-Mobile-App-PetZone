@@ -3,10 +3,11 @@ package com.example.petapp.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
+import java.time.Instant
 import java.util.*
 
 @Entity(tableName = "user")
-data class User(
+data class UserEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: String = UUID.randomUUID().toString(),
@@ -24,10 +25,10 @@ data class User(
     val imageUrl: String? = null,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: String? = null,  // use ISO 8601 format for sync
+    val createdAt: String = Instant.now().toString(),  // Tự động dùng ISO 8601 UTC
 
     @ColumnInfo(name = "updated_at")
-    val updatedAt: String? = null,  // same format as above
+    val updatedAt: String = Instant.now().toString(),  // Gán tạm, sẽ cập nhật khi sửa
 
     @ColumnInfo(name = "role")
     val role: String = "user",
