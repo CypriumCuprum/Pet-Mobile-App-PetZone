@@ -7,13 +7,29 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.petapp.MainActivity
 import com.example.petapp.R
+import com.example.petapp.data.local.AppDatabase
+import com.example.petapp.data.repository.UserRepository
+import com.example.petapp.viewmodel.user.LoginViewModel
 
 class DoingLoginActivity : AppCompatActivity() {
+    private val viewModel: LoginViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                val db = AppDatabase.getInstance(applicationContext)
+                val repo = UserRepository(db.userDao())
+                return LoginViewModel(repo) as T
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,12 +47,20 @@ class DoingLoginActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             // Check login
-            if (username == "admin" && password == "admin") {
-                val intent = Intent(this, MainActivity::class.java)
+            viewModel.login(username, password)
+        }
+
+        viewModel.loginSuccess.observe(this) { isSuccess ->
+            if (isSuccess) {
+                // Login successful, navigate to MainActivity
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
                 startActivity(intent)
-                finish()
+                finish() // Close this activity
             } else {
-                Toast.makeText(this, "Username or password is incorrect", Toast.LENGTH_SHORT).show()
+                // Login failed, show error message
+                Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
             }
         }
     }
