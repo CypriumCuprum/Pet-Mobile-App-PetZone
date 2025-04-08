@@ -12,7 +12,12 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.petapp.R
+import com.example.petapp.viewmodel.statistic.StatisticTypeViewModel
+import com.example.petapp.viewmodel.statistic.TestAdapter
 
 class PetHealth : Fragment() {
 
@@ -44,6 +49,29 @@ class PetHealth : Fragment() {
         setupTouchListener()
 
         return view
+    }
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: TestAdapter
+    private lateinit var viewModel: StatisticTypeViewModel
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = view.findViewById(R.id.recyclerStatistic)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter = TestAdapter(emptyList())
+        recyclerView.adapter = adapter
+
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[StatisticTypeViewModel::class.java]
+
+        viewModel.getAll().observe(viewLifecycleOwner) { list ->
+            adapter.setData(list)
+        }
     }
 
     private fun initViews(view: View) {
