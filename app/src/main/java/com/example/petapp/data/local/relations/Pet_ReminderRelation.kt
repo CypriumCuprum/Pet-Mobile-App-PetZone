@@ -1,4 +1,4 @@
-package com.example.petapp.data.db.relations
+package com.example.petapp.data.local.relations
 import androidx.room.*
 import com.example.petapp.data.model.PetEntity
 import com.example.petapp.data.model.Pet_ReminderEntity

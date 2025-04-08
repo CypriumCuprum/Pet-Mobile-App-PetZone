@@ -1,4 +1,4 @@
-package com.example.petapp.data.db.dao
+package com.example.petapp.data.local.dao
 import androidx.room.*
 import com.example.petapp.data.model.ReminderEntity
 
