@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="join_us_in_just_a_minute">Join us in just a minute!</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="group_10">Group 10</string>
+    <string name="your_name">Your name</string>
+    <string name="or_sign_up_with">or sign up with</string>
+</resources>

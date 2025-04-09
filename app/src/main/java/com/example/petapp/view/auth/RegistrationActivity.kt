@@ -17,5 +17,7 @@ class RegistrationActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val buttonSignin = findViewById<android.widget.Button>(R.id.buttonSignin)
     }
 }

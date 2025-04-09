@@ -18,7 +18,7 @@ class PetStatisticViewModel(application: Application) : AndroidViewModel(applica
     private val allPetStatistics: LiveData<List<PetStatisticEntity>>
 
     init {
-        val petStatisticDao = AppDatabase.getDatabase(application).petStatisticDAO()
+        val petStatisticDao = AppDatabase.getInstance(application).petStatisticDAO()
         repository = PetStatisticRepository(petStatisticDao)
         allPetStatistics = repository.allPetStatistics
 //        CoroutineScope(Dispatchers.IO).launch {
@@ -47,7 +47,7 @@ class PetStatisticViewModel(application: Application) : AndroidViewModel(applica
 //        }
     }
 
-    fun getAll(): LiveData<List<PetStatisticEntity>>{
+    fun getAll(): LiveData<List<PetStatisticEntity>> {
         return this.allPetStatistics
     }
 
@@ -67,7 +67,10 @@ class PetStatisticViewModel(application: Application) : AndroidViewModel(applica
         return repository.getPetStatistics(petId)
     }
 
-    fun getPetStatisticsByTypeAndPet(petId: UUID, typeId: UUID): LiveData<List<PetStatisticEntity>> {
+    fun getPetStatisticsByTypeAndPet(
+        petId: UUID,
+        typeId: UUID
+    ): LiveData<List<PetStatisticEntity>> {
         return repository.getPetStatisticByTypeAndPet(petId, typeId)
     }
 
