@@ -15,15 +15,17 @@ import com.example.petapp.data.model.UserEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 @Database(
     entities = [UserEntity::class, PetEntity::class, StatisticTypeEntity::class, PetStatisticEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDAO
     abstract fun statisticTypeDAO(): StatisticTypeDAO
     abstract fun petStatisticDAO(): PetStatisticDAO
+
     // Singleton như thường lệ
     companion object {
         @Volatile

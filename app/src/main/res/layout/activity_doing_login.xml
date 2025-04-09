@@ -129,7 +129,7 @@
 
     <!-- Thêm phần social media login nếu cần -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonRegister"
+        android:id="@+id/buttonSignIn"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:autoSizeMaxTextSize="26sp"

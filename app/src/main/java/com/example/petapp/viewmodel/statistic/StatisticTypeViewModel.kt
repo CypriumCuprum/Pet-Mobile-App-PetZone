@@ -18,7 +18,7 @@ class StatisticTypeViewModel(application: Application) : AndroidViewModel(applic
     private val allStatisticTypes: LiveData<List<StatisticTypeEntity>>
 
     init {
-        val statisticTypeDao = AppDatabase.getDatabase(application).statisticTypeDAO()
+        val statisticTypeDao = AppDatabase.getInstance(application).statisticTypeDAO()
         repository = StatisticTypeRepository(statisticTypeDao)
         allStatisticTypes = repository.allStatisticTypes
         CoroutineScope(Dispatchers.IO).launch {
@@ -43,7 +43,7 @@ class StatisticTypeViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun getAll(): LiveData<List<StatisticTypeEntity>>{
+    fun getAll(): LiveData<List<StatisticTypeEntity>> {
         return this.allStatisticTypes
     }
 
