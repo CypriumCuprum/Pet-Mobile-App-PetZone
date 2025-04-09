@@ -18,6 +18,6 @@ class RegistrationActivity : AppCompatActivity() {
             insets
         }
 
-        val buttonSignin = findViewById<android.widget.Button>(R.id.buttonSignin)
+        val buttonSignin = findViewById<android.widget.Button>(R.id.buttonSignIn)
     }
 }
