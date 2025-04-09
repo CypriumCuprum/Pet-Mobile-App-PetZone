@@ -22,4 +22,7 @@ interface UserDAO {
 
     @Update
     suspend fun updateUser(user: UserEntity)
+
+    @Query("SELECT * FROM user WHERE username = :username LIMIT 1")
+    suspend fun getUserByUsername(username: String): UserEntity?
 }
