@@ -9,15 +9,19 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.petapp.R
+import com.example.petapp.data.model.PetStatisticEntity
 import com.example.petapp.viewmodel.statistic.StatisticTypeViewModel
 import com.example.petapp.viewmodel.statistic.TestAdapter
+import java.util.UUID
 
 class PetHealth : Fragment() {
 
@@ -27,6 +31,7 @@ class PetHealth : Fragment() {
     private lateinit var submitButton: Button
     private lateinit var foodAmountInput: EditText
     private lateinit var feedingTimeInput: EditText
+    private lateinit var foodNoteInput: EditText
     private lateinit var foodStatus: TextView
     private lateinit var lastFoodStatus: TextView
     private lateinit var rootView: View
@@ -47,6 +52,11 @@ class PetHealth : Fragment() {
 
         // Set up touch listener to dismiss keyboard
         setupTouchListener()
+        val imageView = view.findViewById<ImageView>(R.id.itemImage123)
+        val imageUrl = "http://172.11.100.99:8000/static/images/items/22836b0c-43de-4975-8afd-e05f6e8e85d8.png"
+        Glide.with(this)
+            .load(imageUrl)
+            .into(imageView)
 
         return view
     }
@@ -81,6 +91,7 @@ class PetHealth : Fragment() {
         submitButton = view.findViewById(R.id.submit_button)
         foodAmountInput = view.findViewById(R.id.food_amount_input)
         feedingTimeInput = view.findViewById(R.id.feeding_time_input)
+        foodNoteInput = view.findViewById(R.id.note_input)
         foodStatus = view.findViewById(R.id.food_status)
         lastFoodStatus = view.findViewById(R.id.last_food_status)
     }
@@ -102,9 +113,9 @@ class PetHealth : Fragment() {
         submitButton.setOnClickListener {
             val foodAmount = foodAmountInput.text.toString()
             val feedingTime = feedingTimeInput.text.toString()
-
+            val foodNote = foodNoteInput.text.toString()
             // Process the inputs
-            processInputs(foodAmount, feedingTime)
+            processInputs(foodAmount, feedingTime, foodNote)
 
             // Hide the form and clear inputs
             foodCheckForm.visibility = View.GONE
@@ -148,14 +159,21 @@ class PetHealth : Fragment() {
     private fun clearInputs() {
         foodAmountInput.text.clear()
         feedingTimeInput.text.clear()
+        foodNoteInput.text.clear()
     }
 
-    private fun processInputs(foodAmount: String, feedingTime: String) {
+    private fun processInputs(foodAmount: String, feedingTime: String, foodNote: String) {
         // Update UI based on inputs
         if (foodAmount.isNotEmpty()) {
             foodStatus.text = "Fed $foodAmount g"
             lastFoodStatus.text = "Last Fed ($feedingTime)"
-
+            val foodStatistic = PetStatisticEntity(
+                value = foodAmount.toFloat(),
+                recorded_at = feedingTime,
+                petid = UUID.fromString("11111111-1111-1111-1111-111111111112"),
+                statistic_typeid = UUID.fromString("11111111-1111-1111-1111-111111111112"),
+                note = foodNote
+            )
             // You can add code here to save the data to your database or shared preferences
             // For example:
             // saveFoodData(foodAmount, feedingTime)
