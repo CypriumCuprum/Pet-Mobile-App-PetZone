@@ -31,8 +31,8 @@ import java.util.Locale
 import java.util.UUID
 
 // Define constants for SharedPreferences
-private const val PREFS_NAME = "user_prefs"
-private const val KEY_USER_ID = "user_id"
+private const val PREFS_NAME = "PetAppPrefs"
+private const val KEY_USER_ID = "logged_in_user_id"
 
 class AddPetActivity : AppCompatActivity() {
 
