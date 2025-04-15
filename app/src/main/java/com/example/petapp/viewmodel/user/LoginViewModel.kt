@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.example.petapp.data.model.UserEntity
 import com.example.petapp.data.repository.UserRepository
 import kotlinx.coroutines.launch
+import android.util.Log
 
 class LoginViewModel(
     private val repository: UserRepository,
@@ -64,23 +65,20 @@ class LoginViewModel(
         }
     }
 
+    // --- MODIFIED: isUserLoggedIn ---
     fun isUserLoggedIn(): Boolean {
-        return getLoggedInUserId() != INVALID_USER_ID
+        // User is logged in if the retrieved User ID String is not null (or not empty, if you prefer)
+        return getLoggedInUserId() != null
     }
 
-    fun getLoggedInUserId(): Int {
+    // --- MODIFIED: getLoggedInUserId ---
+    fun getLoggedInUserId(): String? { // Return type changed to nullable String
         val context = getApplication<Application>().applicationContext
         val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return sharedPref.getInt(KEY_USER_ID, INVALID_USER_ID)
-    }
-
-    fun clearLoginSession() {
-        val context = getApplication<Application>().applicationContext
-        val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) ?: return
-        with(sharedPref.edit()) {
-            remove(KEY_USER_ID)
-            apply()
-        }
+        // Use getString, default to null if the key is not found
+        val userId = sharedPref.getString(KEY_USER_ID, null)
+        Log.d("LoginViewModel", "Retrieved user ID (String?): $userId") // Log retrieved value
+        return userId
     }
 
     // Reset navigation state after navigating

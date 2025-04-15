@@ -11,5 +11,5 @@ interface PetDAO {
     suspend fun getPetById(userid: String): List<PetEntity?>
 
     @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
-    suspend fun createPet(petEntity: PetEntity): PetEntity?
+    suspend fun createPet(petEntity: PetEntity): Long
 }
