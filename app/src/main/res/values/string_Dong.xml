@@ -16,4 +16,13 @@
     <string name="add_pet_save">Save</string>
     <string name="add_pet_upload_your">Upload your</string>
     <string name="add_pet_pet_avatar">pet avatar</string>
+    <string name="add_pet_date_required">Please select the pet\\\'s birth date.</string>
+    <string name="add_pet_prompt_select_gender">Select Gender</string>
+    <string name="add_pet_gender_male">Male</string>
+    <string name="add_pet_gender_female">Female</string>
+    <string-array name="gender_options">
+        <item>@string/add_pet_prompt_select_gender</item> <!-- Optional: Add a prompt -->
+        <item>@string/add_pet_gender_male</item>
+        <item>@string/add_pet_gender_female</item>
+    </string-array>
 </resources>
