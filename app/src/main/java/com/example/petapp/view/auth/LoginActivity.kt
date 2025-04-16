@@ -7,9 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.petapp.MainActivity
 import com.example.petapp.R
-import com.example.petapp.view.pet.AddPetActivity
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
         val button_register = findViewById<Button>(R.id.buttonRegister)
         button_register.setOnClickListener {
-            val intentmain = Intent(this, AddPetActivity::class.java)
+            val intentmain = Intent(this, RegistrationActivity::class.java)
             startActivity(intentmain)
         }
     }
