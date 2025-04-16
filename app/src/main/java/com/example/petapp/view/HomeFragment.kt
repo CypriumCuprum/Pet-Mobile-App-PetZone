@@ -1,33 +1,38 @@
 package com.example.petapp.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import android.widget.Button
+import android.widget.Toast
 import com.example.petapp.R
+import com.example.petapp.data.local.AppDatabase
+import com.example.petapp.data.model.submodel.PetReduceForHome
+import com.example.petapp.data.repository.UserRepository
+import com.example.petapp.view.auth.LoginActivity
+import com.example.petapp.viewmodel.pet.PetViewModel
+import com.example.petapp.viewmodel.user.LoginViewModel
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var recyclerViewHorizontal: RecyclerView
+    private lateinit var buttonAddPet: Button
+    private lateinit var petViewModel: PetViewModel
+    private lateinit var petAdapter: YourPetAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        petViewModel = ViewModelProvider(
+            this,
+            PetViewModel.Factory(requireActivity().application)
+        )[PetViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -38,23 +43,84 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialize views
+        recyclerViewHorizontal = view.findViewById(R.id.recyclerViewHorizontal)
+        //debug log
+        println("Initializing RecyclerView: $recyclerViewHorizontal")
+        buttonAddPet = view.findViewById(R.id.buttonAddPet)
+
+        setupRecyclerView()
+        loadPets()
+
+        // Set up add pet button click listener
+        buttonAddPet.setOnClickListener {
+            // Navigate to add pet screen - implement navigation to your add pet fragment/activity
+            // Example using Navigation Component:
+            // findNavController().navigate(R.id.action_homeFragment_to_addPetFragment)
+
+            // Or traditional way:
+            // startActivity(Intent(requireContext(), AddPetActivity::class.java))
+        }
+    }
+
+    private fun setupRecyclerView() {
+        petAdapter = YourPetAdapter()
+        //debug log
+        println("Setting up RecyclerView with adapter: $petAdapter")
+        recyclerViewHorizontal.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = petAdapter
+        }
+        println("RecyclerView setup complete with layout manager: ${recyclerViewHorizontal.layoutManager}")
+    }
+
+    private fun loadPets() {
+        val loginViewModel = ViewModelProvider(
+            requireActivity(),
+            LoginViewModel.Factory(
+                UserRepository(AppDatabase.getInstance(requireActivity().application).userDao()),
+                requireActivity().application
+            )
+        )[LoginViewModel::class.java]
+
+        // Get the current user ID from the LoginViewModel
+        val userId = loginViewModel.getLoggedInUserId()
+        val hardCodePet = listOf(
+            PetReduceForHome("1", "Pet 1", ""),
+            PetReduceForHome("2", "Pet 2", ""),
+            PetReduceForHome("3", "Pet 3", ""),
+            PetReduceForHome("4", "Pet 4", ""),
+            PetReduceForHome("5", "Pet 5", ""),
+            PetReduceForHome("6", "Pet 6", ""),
+            PetReduceForHome("7", "Pet 7", ""),
+            PetReduceForHome("8", "Pet 8", ""),
+        )
+        petAdapter.submitList(hardCodePet)
+
+//        if (userId != null) {
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                val pets = petViewModel.getPetsForHome(userId)
+//                println("Pets for user $userId: $pets") // Debug log
+//                petAdapter.submitList(pets)
+//            }
+//        } else {
+//            // Handle case where user ID is null (e.g., show a message or redirect to login)
+//            redirectToLogin()
+//            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+//        }
+    }
+
+    private fun redirectToLogin() {
+        startActivity(Intent(requireContext(), LoginActivity::class.java))
+        activity?.finish()
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = HomeFragment()
     }
 }

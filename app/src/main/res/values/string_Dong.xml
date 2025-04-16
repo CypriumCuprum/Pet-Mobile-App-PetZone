@@ -5,4 +5,24 @@
     <string name="group_10">Group 10</string>
     <string name="your_name">Your name</string>
     <string name="or_sign_up_with">or sign up with</string>
+    <string name="add_your_pet">Add your Pet</string>
+    <string name="add_pet_pet_name">Pet Name</string>
+    <string name="add_pet_breed_name">Breed Name</string>
+    <string name="add_pet_gender">Gender</string>
+    <string name="add_pet_age">Born</string>
+    <string name="add_pet_colour">Colour</string>
+    <string name="add_pet_height">Height</string>
+    <string name="add_pet_weight">Weight</string>
+    <string name="add_pet_save">Save</string>
+    <string name="add_pet_upload_your">Upload your</string>
+    <string name="add_pet_pet_avatar">pet avatar</string>
+    <string name="add_pet_date_required">Please select the pet\\\'s birth date.</string>
+    <string name="add_pet_prompt_select_gender">Select Gender</string>
+    <string name="add_pet_gender_male">Male</string>
+    <string name="add_pet_gender_female">Female</string>
+    <string-array name="gender_options">
+        <item>@string/add_pet_prompt_select_gender</item> <!-- Optional: Add a prompt -->
+        <item>@string/add_pet_gender_male</item>
+        <item>@string/add_pet_gender_female</item>
+    </string-array>
 </resources>

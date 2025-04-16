@@ -432,7 +432,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Food Amount (grams)"
+                        android:text="@string/food_amout"
                         android:fontFamily="@font/fredoka_medium"
                         android:textColor="@color/text_black"
                         android:textSize="12sp"
@@ -445,7 +445,7 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:inputType="number"
-                        android:hint="Enter food amount"
+                        android:hint="@string/enter_food_amout"
                         android:fontFamily="@font/fredoka_regular"
                         android:textSize="12sp"/>
                 </LinearLayout>
@@ -459,7 +459,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Feeding Time"
+                        android:text="@string/feeding_time"
                         android:fontFamily="@font/fredoka_medium"
                         android:textColor="@color/text_black"
                         android:textSize="12sp"
@@ -472,10 +472,43 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:inputType="time"
-                        android:hint="Enter feeding time"
+                        android:hint="@string/enter_feeding_time"
                         android:fontFamily="@font/fredoka_regular"
                         android:textSize="12sp"/>
                 </LinearLayout>
+
+                <!-- Note Text Field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/note_food_amout"
+                        android:fontFamily="@font/fredoka_medium"
+                        android:textColor="@color/text_black"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="4dp"/>
+
+                    <EditText
+                        android:id="@+id/note_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/bg_edit_text_border"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:inputType="textMultiLine"
+                        android:gravity="top|start"
+                        android:hint="@string/enter_note_food_amout"
+                        android:fontFamily="@font/fredoka_regular"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
 
                 <!-- Submit Button -->
                 <LinearLayout
@@ -607,6 +640,12 @@
             </LinearLayout>
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/itemImage123"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Item Image" />
 
     </LinearLayout>
 

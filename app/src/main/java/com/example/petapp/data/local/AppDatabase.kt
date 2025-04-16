@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.petapp.data.local.dao.PetDAO
 import com.example.petapp.data.local.dao.PetStatisticDAO
 import com.example.petapp.data.local.dao.Pet_ReminderDAO
 import com.example.petapp.data.local.dao.ReminderDao
@@ -31,6 +32,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun petStatisticDAO(): PetStatisticDAO
     abstract fun reminderDAO():ReminderDao
     abstract fun petReminderDAO(): Pet_ReminderDAO
+    abstract fun petDao(): PetDAO
+
 
     // Singleton như thường lệ
     companion object {
