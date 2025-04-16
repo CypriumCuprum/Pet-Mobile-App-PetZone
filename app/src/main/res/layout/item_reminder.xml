@@ -2,9 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="androidx.core.content.ContextCompat" />
         <variable
             name="reminder"
-            type="com.example.petapp.data.model.Reminder" />
+            type="com.example.petapp.data.model.ReminderEntity" />
+
     </data>
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -24,9 +26,8 @@
                 android:id="@+id/img_feeding1"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/pet_food_reminder"
+                app:reminderBackground="@{reminder}"
                 android:padding="8dp"
-                android:src="@drawable/pet_food_reminder"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +39,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/fredoka_medium"
-                android:text="@{reminder.title}"
+                android:text="@{reminder.title()}"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -53,7 +54,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/fredoka_regular"
-                android:text="@{reminder.fomartDate()}"
+                android:text="@{reminder.timeReminder}"
                 android:textColor="#757575"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/switch_feeding1"
@@ -67,7 +68,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/fredoka_regular"
-                android:text="@{reminder.namePet()}"
+                android:text="Bella"
                 android:textColor="#757575"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/switch_feeding1"
