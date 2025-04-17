@@ -1,5 +1,7 @@
 package com.example.petapp.view.petHealth
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +19,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.petapp.BuildConfig
 import com.example.petapp.R
 import com.example.petapp.data.model.PetStatisticEntity
 import com.example.petapp.viewmodel.statistic.StatisticTypeViewModel
 import com.example.petapp.viewmodel.statistic.TestAdapter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import java.util.UUID
 
 class PetHealth : Fragment() {
@@ -53,7 +59,8 @@ class PetHealth : Fragment() {
         // Set up touch listener to dismiss keyboard
         setupTouchListener()
         val imageView = view.findViewById<ImageView>(R.id.itemImage123)
-        val imageUrl = "http://172.11.100.99:8000/static/images/items/22836b0c-43de-4975-8afd-e05f6e8e85d8.png"
+        val imageUrl = "${BuildConfig.SERVER_URL}static/images/items/22836b0c-43de-4975-8afd-e05f6e8e85d8.png"
+
         Glide.with(this)
             .load(imageUrl)
             .into(imageView)
@@ -107,6 +114,28 @@ class PetHealth : Fragment() {
             foodCheckForm.visibility = View.GONE
             clearInputs()
             hideKeyboard()
+        }
+
+        feedingTimeInput.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                val hour = calendar.get(Calendar.HOUR_OF_DAY)
+                val minute = calendar.get(Calendar.MINUTE)
+
+                TimePickerDialog(requireContext(), { _, selectedHour, selectedMinute ->
+                    val selectedDateTime = Calendar.getInstance().apply {
+                        set(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute)
+                    }
+
+                    val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                    feedingTimeInput.setText(format.format(selectedDateTime.time))
+                }, hour, minute, true).show()
+
+            }, year, month, day).show()
         }
 
         // Submit button processes the inputs and closes the form
