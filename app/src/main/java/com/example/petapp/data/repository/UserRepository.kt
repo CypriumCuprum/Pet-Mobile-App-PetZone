@@ -9,4 +9,7 @@ class UserRepository(private val dao: UserDAO) {
 
     suspend fun register(user: UserEntity) =
         dao.register(user)
+
+    suspend fun getUserByUsername(username: String) =
+        dao.getUserByUsername(username)
 }

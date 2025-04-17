@@ -5,11 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.petapp.data.local.dao.PetDAO
 import com.example.petapp.data.local.dao.PetStatisticDAO
+import com.example.petapp.data.local.dao.Pet_ReminderDAO
+import com.example.petapp.data.local.dao.ReminderDao
 import com.example.petapp.data.local.dao.StatisticTypeDAO
 import com.example.petapp.data.local.dao.UserDAO
 import com.example.petapp.data.model.PetEntity
 import com.example.petapp.data.model.PetStatisticEntity
+import com.example.petapp.data.model.Pet_ReminderEntity
+import com.example.petapp.data.model.ReminderEntity
 import com.example.petapp.data.model.StatisticTypeEntity
 import com.example.petapp.data.model.UserEntity
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [UserEntity::class, PetEntity::class, StatisticTypeEntity::class, PetStatisticEntity::class],
+    entities = [UserEntity::class, PetEntity::class, StatisticTypeEntity::class, PetStatisticEntity::class, ReminderEntity::class, Pet_ReminderEntity::class],
     version = 2,
     exportSchema = false
 )
@@ -25,6 +30,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDAO
     abstract fun statisticTypeDAO(): StatisticTypeDAO
     abstract fun petStatisticDAO(): PetStatisticDAO
+    abstract fun reminderDAO():ReminderDao
+    abstract fun petReminderDAO(): Pet_ReminderDAO
+    abstract fun petDao(): PetDAO
+
 
     // Singleton như thường lệ
     companion object {
