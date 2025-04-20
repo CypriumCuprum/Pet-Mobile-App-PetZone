@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.petapp.data.local.AppDatabase
 import com.example.petapp.data.model.PetEntity
-import com.example.petapp.data.model.submodel.PetReduceForHome
 import com.example.petapp.data.repository.PetRepository
 
 class PetViewModel(application: Application) : AndroidViewModel(application) {
@@ -18,12 +17,8 @@ class PetViewModel(application: Application) : AndroidViewModel(application) {
         repository = PetRepository(db.petDao())
     }
 
-    suspend fun addPet(pet: PetEntity) {
-        repository.addPet(pet)
-    }
-
-    suspend fun getPetsForHome(userId: String): List<PetReduceForHome> {
-        return repository.getPetReduceForHome(userId)
+    suspend fun getPetsForHome(userId: String): List<PetEntity> {
+        return repository.getPetByUserId(userId)
     }
 
     @Suppress("UNCHECKED_CAST")

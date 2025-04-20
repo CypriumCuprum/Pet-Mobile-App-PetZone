@@ -3,15 +3,21 @@ package com.example.petapp.view.pet
 import android.app.DatePickerDialog
 import android.content.Context // Import Context
 import android.content.SharedPreferences // Import SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log // Import Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -25,6 +31,9 @@ import com.example.petapp.data.model.PetEntity
 import com.example.petapp.data.repository.PetRepository
 // Import your ViewModel Factory if you have one
 import com.example.petapp.viewmodel.pet.PetAddingViewModel
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -46,10 +55,16 @@ class AddPetActivity : AppCompatActivity() {
     private lateinit var btnSave: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var cardViewAvatar: CardView
+    private lateinit var imageViewAvatar: ImageView
+    private lateinit var linearLayoutAvatar: LinearLayout
 
     private var selectedDate: Calendar? = null
     private val dateFormat =
         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Use ISO-like format for storage
+
+    // For avatar image
+    private var selectedImageUri: Uri? = null
+    private var savedImagePath: String? = null
 
     // --- ViewModel Setup ---
     private val petAddingViewModel: PetAddingViewModel by viewModels {
@@ -62,6 +77,27 @@ class AddPetActivity : AppCompatActivity() {
 
     // --- SharedPreferences ---
     private lateinit var sharedPreferences: SharedPreferences
+
+    // ActivityResultLauncher for image picking
+    private val pickImage =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                selectedImageUri = it
+                try {
+                    // Display selected image in the avatar view
+                    imageViewAvatar.setImageURI(selectedImageUri)
+
+                    // Hide the text prompts when image is selected
+                    linearLayoutAvatar.visibility = View.GONE
+
+                    // Set the imageView to be visible
+                    imageViewAvatar.visibility = View.VISIBLE
+                } catch (e: Exception) {
+                    Log.e("AddPetActivity", "Error displaying image: ${e.message}")
+                    Toast.makeText(this, "Error displaying image", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +132,8 @@ class AddPetActivity : AppCompatActivity() {
         btnSave = findViewById(R.id.buttonSavePet)
         progressBar = findViewById(R.id.addPetProgressBar)
         cardViewAvatar = findViewById(R.id.cardViewAvatar)
+        imageViewAvatar = findViewById(R.id.imageViewAvatar)
+        linearLayoutAvatar = findViewById(R.id.linearLayoutAvatar)
     }
 
     private fun setupListeners() {
@@ -109,7 +147,47 @@ class AddPetActivity : AppCompatActivity() {
 
         cardViewAvatar.setOnClickListener {
             Toast.makeText(this, "Avatar upload clicked", Toast.LENGTH_SHORT).show()
-            // TODO: Implement image picking logic
+            setPetAvatar()
+        }
+    }
+
+    private fun setPetAvatar() {
+        // Launch gallery to pick an image
+        pickImage.launch("image/*")
+    }
+
+    private fun saveImageToInternalStorage(): String {
+        if (selectedImageUri == null) {
+            println("No image selected")
+            return ""
+        }
+
+        try {
+            // Generate a unique filename using UUID
+            val filename = "pet_avatar_${UUID.randomUUID()}.jpg"
+            println("Generated filename: $filename")
+            val file = File(filesDir, filename)
+
+            // Create an input stream from the selected URI
+            val inputStream = contentResolver.openInputStream(selectedImageUri!!)
+
+            // Create a bitmap from the input stream
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream?.close()
+
+            // Save the bitmap to the app's internal storage
+            FileOutputStream(file).use { outputStream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+                outputStream.flush()
+            }
+
+            Log.d("AddPetActivity", "Image saved successfully at: ${file.absolutePath}")
+            return file.absolutePath
+
+        } catch (e: IOException) {
+            Log.e("AddPetActivity", "Error saving image: ${e.message}")
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()
+            return ""
         }
     }
 
@@ -181,10 +259,7 @@ class AddPetActivity : AppCompatActivity() {
                 "AddPetActivity",
                 "User ID not found in SharedPreferences ($PREFS_NAME, $KEY_USER_ID)"
             )
-            // Optional: Redirect to login screen
-            // startActivity(Intent(this, LoginActivity::class.java))
-            // finish()
-            return // Stop the save process
+            return
         }
 
         Log.d("AddPetActivity", "Retrieved User ID: $userId")
@@ -215,7 +290,6 @@ class AddPetActivity : AppCompatActivity() {
         }
         if (selectedDate == null) {
             Toast.makeText(this, R.string.add_pet_date_required, Toast.LENGTH_LONG).show()
-            // Highlight the date field or show error near it
             return
         }
         val height = heightStr.toFloatOrNull()
@@ -238,8 +312,12 @@ class AddPetActivity : AppCompatActivity() {
         // Format date for storage (e.g., YYYY-MM-DD)
         val formattedBirthDate = dateFormat.format(selectedDate!!.time)
 
-        // TODO: Get image URL if image was selected/uploaded
-        val imageUrl: String? = null // Placeholder
+        // Save image if one was selected
+        var imageUrl: String = "ok"
+        if (selectedImageUri != null) {
+            imageUrl = saveImageToInternalStorage()
+            println("Saved image path: $imageUrl")
+        }
 
         // Create PetEntity object
         val newPet = PetEntity(
@@ -260,17 +338,5 @@ class AddPetActivity : AppCompatActivity() {
         // --- Call ViewModel to add the pet ---
         Log.d("AddPetActivity", "Calling ViewModel to add pet: $newPet")
         petAddingViewModel.addPet(newPet)
-
-        // --- Remove Simulation ---
-        // The rest of the UI update (hiding progress, showing toast, finishing)
-        // will now be handled by the ViewModel observers in observeViewModel()
-        /*
-        android.os.Handler(mainLooper).postDelayed({
-            progressBar.visibility = View.GONE
-            btnSave.isEnabled = true
-            Toast.makeText(this, "Pet data saved (simulated)", Toast.LENGTH_SHORT).show()
-            // finish() // Optionally close activity after save
-        }, 2000)
-        */
     }
 }
