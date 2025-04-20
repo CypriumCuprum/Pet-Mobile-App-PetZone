@@ -43,7 +43,7 @@ data class PetEntity(
     val weight: Float,
 
     @ColumnInfo(name = "image_url")
-    val imageUrl: String? = null,
+    val imageUrl: String,
 
     @ColumnInfo(name = "note")
     val note: String? = null,

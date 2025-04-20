@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.petapp.R
-import com.example.petapp.data.model.submodel.PetReduceForHome
+import com.example.petapp.data.model.PetEntity
+import com.example.petapp.view.petHealth.PetHealth
 
 class YourPetAdapter :
-    ListAdapter<PetReduceForHome, YourPetAdapter.PetViewHolder>(PetDiffCallback()) {
+    ListAdapter<PetEntity, YourPetAdapter.PetViewHolder>(PetDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,7 +30,7 @@ class YourPetAdapter :
         private val petImage: ImageView = itemView.findViewById(R.id.pet_image)
         private val petName: TextView = itemView.findViewById(R.id.pet_name)
 
-        fun bind(pet: PetReduceForHome) {
+        fun bind(pet: PetEntity) {
             petName.text = pet.name
             //debug
             println("Binding pet: ${pet.name} with ID: ${pet.id}")
@@ -47,24 +48,25 @@ class YourPetAdapter :
 
             // Optional: Set click listener to navigate to pet details
             itemView.setOnClickListener {
-                // Example navigation to detail screen
-                // val action = HomeFragmentDirections.actionHomeFragmentToPetDetailFragment(pet.id)
-                // itemView.findNavController().navigate(action)
+                executeOnClickPet(pet)
             }
+        }
+
+        private fun executeOnClickPet(pet: PetEntity) {
         }
     }
 
-    class PetDiffCallback : DiffUtil.ItemCallback<PetReduceForHome>() {
+    class PetDiffCallback : DiffUtil.ItemCallback<PetEntity>() {
         override fun areItemsTheSame(
-            oldItem: PetReduceForHome,
-            newItem: PetReduceForHome
+            oldItem: PetEntity,
+            newItem: PetEntity
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: PetReduceForHome,
-            newItem: PetReduceForHome
+            oldItem: PetEntity,
+            newItem: PetEntity
         ): Boolean {
             return oldItem == newItem
         }

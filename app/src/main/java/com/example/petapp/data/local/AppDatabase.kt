@@ -70,6 +70,7 @@ abstract class AppDatabase : RoomDatabase() {
                     role = "admin"
                 )
                 userDao.register(admin)
+                println("Admin account created: $admin")
             }
         }
     }
