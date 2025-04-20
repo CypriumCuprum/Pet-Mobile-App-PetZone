@@ -456,6 +456,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginBottom="16dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -464,6 +465,7 @@
                         android:textColor="@color/text_black"
                         android:textSize="12sp"
                         android:layout_marginBottom="4dp"/>
+
                     <EditText
                         android:id="@+id/feeding_time_input"
                         android:layout_width="match_parent"
@@ -471,11 +473,14 @@
                         android:background="@drawable/bg_edit_text_border"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        android:inputType="time"
                         android:hint="@string/enter_feeding_time"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:inputType="none"
                         android:fontFamily="@font/fredoka_regular"
                         android:textSize="12sp"/>
                 </LinearLayout>
+
 
                 <!-- Note Text Field -->
                 <LinearLayout

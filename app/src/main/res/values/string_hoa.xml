@@ -96,4 +96,5 @@
     <string name = "enter_feeding_time">Enter feeding time (dd/MM/yyyy hh:mm:ss)</string>
     <string name = "note_food_amout">Note</string>
     <string name = "enter_note_food_amout">Enter your note here</string>
+    <string name="title_shop_type">Type</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.petapp.data.model.ReminderEntity
 import com.example.petapp.databinding.FragmentReminder1Binding
 import com.example.petapp.viewmodel.reminder.ReminderAdapter
 import com.example.petapp.viewmodel.reminder.RemindersViewModel
@@ -31,15 +32,28 @@ class Reminder1Fragment : Fragment() {
         // Khởi tạo ViewModel
         viewModel = ViewModelProvider(this)[RemindersViewModel::class.java]
 
+        viewModel.allReminders.observe(viewLifecycleOwner) { existingReminders ->
+            if (existingReminders.isNullOrEmpty()) {
+                val testReminder = ReminderEntity(
+                    type = "vet",
+                    timeReminder = "2025-04-15 10:00:00",
+                    repeat = "Everyday",
+                    note = "Test reminder",
+                    status = true
+                )
+                viewModel.insertReminder(testReminder)
+            }
+        }
+
         // Khởi tạo Adapter
-        reminderAdapter = ReminderAdapter(viewModel)
+        reminderAdapter = ReminderAdapter()
 
         // Cấu hình RecyclerView
         binding.recyclerViewReminders.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewReminders.adapter = reminderAdapter
 
         // Quan sát LiveData và cập nhật Adapter
-        viewModel.reminders.observe(viewLifecycleOwner) { newList ->
+        viewModel.allReminders.observe(viewLifecycleOwner) { newList ->
             reminderAdapter.submitList(newList)
         }
     }
