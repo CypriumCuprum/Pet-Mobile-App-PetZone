@@ -3,133 +3,130 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/gps_nav_graph"
+    tools:context=".view.gps.GPSFragment">
 
-    <!-- Map Fragment -->
-    <fragment
-        android:id="@+id/mapFragment"
+    <!-- Container cho Google Map -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/preview_map_placeholder" />
 
-    <!-- GPS Device Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGpsDevice"
+    <Button
+        android:id="@+id/gpsDeviceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/bg_main_color"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/design_default_color_primary"
         android:drawablePadding="8dp"
-        android:fontFamily="@font/fredoka_medium"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:text="GPS Device"
-        android:textAllCaps="false"
-        android:textColor="@color/text_white"
-        android:textSize="18sp"
-        app:cornerRadius="10dp"
-        app:icon="@drawable/ic_gps_menu"
-        app:iconGravity="textStart"
-        app:iconTint="@color/text_white"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Pet Info Card -->
+
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardPetInfo"
-        android:layout_width="match_parent"
+        android:id="@+id/petInfoCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:visibility="gone"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible"> <!-- tools:visibility dùng để xem trước trong layout editor -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tvPetName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+            <!-- Icon thú cưng lớn trong thẻ -->
+            <ImageView
+                android:id="@+id/petDetailIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Tanjiro Komodo" />
+                tools:src="@drawable/accessories1" /> <!-- Ảnh placeholder -->
 
+            <!-- Tên thú cưng -->
             <TextView
-                android:id="@+id/tvDistanceLabel"
+                android:id="@+id/petNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/petDetailIcon"
+                app:layout_constraintTop_toTopOf="@id/petDetailIcon"
+                tools:text="Tanjiro Kamado" />
+
+            <!-- Icon ghim nhỏ -->
+            <ImageView
+                android:id="@+id/locationPinIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="@id/petNameTextView"
+                app:layout_constraintTop_toBottomOf="@id/petNameTextView"
+                app:srcCompat="@drawable/smileys" />
+
+            <!-- Thông tin khoảng cách -->
+            <TextView
+                android:id="@+id/distanceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="4dp"
+                android:layout_marginStart="4dp"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPetName"
+                app:layout_constraintBottom_toBottomOf="@id/locationPinIcon"
+                app:layout_constraintStart_toEndOf="@id/locationPinIcon"
+                app:layout_constraintTop_toTopOf="@id/locationPinIcon"
                 tools:text="200m away from you" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Icon pin nhỏ -->
+            <ImageView
+                android:id="@+id/batteryIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/distanceTextView"
+                app:layout_constraintStart_toEndOf="@id/distanceTextView"
+                app:layout_constraintTop_toTopOf="@id/distanceTextView"
+                app:srcCompat="@drawable/shop" />
+
+            <!-- Thông tin pin -->
+            <TextView
+                android:id="@+id/batteryTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvDistanceLabel">
+                android:layout_marginStart="4dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/batteryIcon"
+                app:layout_constraintStart_toEndOf="@id/batteryIcon"
+                app:layout_constraintTop_toTopOf="@id/batteryIcon"
+                tools:text="70%" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="Signal" />
-
-                    <TextView
-                        android:id="@+id/tvWifiSignal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp"
-                        tools:text="70%" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="Batery Level" />
-
-                    <TextView
-                        android:id="@+id/tvBatteryLevel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp"
-                        tools:text="50%" />
-                </LinearLayout>
-            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

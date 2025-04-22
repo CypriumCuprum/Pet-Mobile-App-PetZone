@@ -24,11 +24,20 @@ data class GPSEntity(
     @ColumnInfo(name = "name")
     val name: String,
 
+    @ColumnInfo(name = "latitude")
+    val latitude: Double = -1.0,
+
+    @ColumnInfo(name = "longitude")
+    val longitude: Double = -1.0,
+
     @ColumnInfo(name = "status")
     val status: String,
 
     @ColumnInfo(name = "battery")
     val battery: String,
+
+    @ColumnInfo(name = "image_url")
+    val imageUrl: String? = null,
 
     @ColumnInfo(name = "created_at")
     val createdAt: String = Instant.now().toString(),  // Tự động dùng ISO 8601 UTC
