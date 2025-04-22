@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.petapp.R
 import com.example.petapp.data.model.ReminderEntity
 import com.example.petapp.databinding.FragmentReminder1Binding
 import com.example.petapp.viewmodel.reminder.ReminderAdapter
@@ -17,6 +18,7 @@ class Reminder1Fragment : Fragment() {
     private lateinit var reminderAdapter: ReminderAdapter
     private var _binding: FragmentReminder1Binding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +57,13 @@ class Reminder1Fragment : Fragment() {
         // Quan sát LiveData và cập nhật Adapter
         viewModel.allReminders.observe(viewLifecycleOwner) { newList ->
             reminderAdapter.submitList(newList)
+        }
+        binding.btnAddReminder.setOnClickListener {
+            val addReminderFragment = Add_reminderFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, addReminderFragment)
+                .addToBackStack(null) // nếu muốn quay lại fragment cũ
+                .commit()
         }
     }
 

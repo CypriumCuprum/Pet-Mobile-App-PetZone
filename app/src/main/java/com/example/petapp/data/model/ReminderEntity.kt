@@ -10,28 +10,28 @@ import java.util.*;
 data class ReminderEntity(
     @PrimaryKey
     @ColumnInfo(name = "id") // Thêm ColumnInfo cho rõ ràng (tùy chọn)
-    val id: String = UUID.randomUUID().toString(), // Khởi tạo giá trị UUID mặc định khi tạo đối tượng mới
+    var id: String = UUID.randomUUID().toString(), // Khởi tạo giá trị UUID mặc định khi tạo đối tượng mới
 
     @ColumnInfo(name = "type")
-    val type: String,
+    var type: String,
 
     @ColumnInfo(name = "time_reminder")
-    val timeReminder: String, // Vẫn dùng Long cho timestamp
+    var timeReminder: String, // Vẫn dùng Long cho timestamp
 
     @ColumnInfo(name = "repeat")
-    val repeat: String,
+    var repeat: String,
 
     @ColumnInfo(name = "create_at")
-    val createdAt: String = Instant.now().toString(), // Vẫn dùng Long cho date
+    var createdAt: String = Instant.now().toString(), // Vẫn dùng Long cho date
 
     @ColumnInfo(name = "update_at")
-    val updatedAt: String = Instant.now().toString(), // Vẫn dùng Long cho date
+    var updatedAt: String = Instant.now().toString(), // Vẫn dùng Long cho date
 
     @ColumnInfo(name = "note")
-    val note: String?,
+    var note: String?,
 
     @ColumnInfo(name = "status")
-    val status: Boolean
+    var status: Boolean
 ){
     fun title():String {
         return when (type) {
