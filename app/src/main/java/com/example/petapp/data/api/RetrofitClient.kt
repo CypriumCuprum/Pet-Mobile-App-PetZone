@@ -9,11 +9,11 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     private const val BASE_URL = BuildConfig.SERVER_URL
     val apiService: ApiService by lazy {
-//        val okHttpClient = OkHttpClient.Builder()
-//            .connectTimeout(30, TimeUnit.SECONDS)  // Tăng thời gian timeout kết nối
-//            .readTimeout(30, TimeUnit.SECONDS)     // Tăng thời gian timeout đọc dữ liệu
-//            .writeTimeout(30, TimeUnit.SECONDS)    // Tăng thời gian timeout ghi dữ liệu
-//            .build()
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)  // Tăng thời gian timeout kết nối
+            .readTimeout(30, TimeUnit.SECONDS)     // Tăng thời gian timeout đọc dữ liệu
+            .writeTimeout(30, TimeUnit.SECONDS)    // Tăng thời gian timeout ghi dữ liệu
+            .build()
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

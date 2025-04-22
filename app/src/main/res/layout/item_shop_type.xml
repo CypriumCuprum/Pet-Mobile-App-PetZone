@@ -17,7 +17,6 @@
         app:layout_constraintBottom_toTopOf="@id/textViewTitle"
         app:layout_constraintHeight_percent="0.75"
         app:cardCornerRadius="15dp"
-        app:cardElevation="4dp"
         app:cardBackgroundColor="@color/bg_grey"
         android:outlineAmbientShadowColor="@color/black"
         app:strokeColor="@color/text_grey"
@@ -28,7 +27,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="center"
-        android:src="@drawable/foodshop"
+        android:src="@drawable/iot_shop"
         />
     </com.google.android.material.card.MaterialCardView>
     <TextView
