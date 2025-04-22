@@ -12,20 +12,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.petapp.R
 import com.example.petapp.data.local.AppDatabase
-import com.example.petapp.data.model.submodel.PetReduceForHome
 import com.example.petapp.data.repository.UserRepository
 import com.example.petapp.view.auth.LoginActivity
+import com.example.petapp.view.pet.AddPetActivity
+import com.example.petapp.viewmodel.pet.CalendarAdapter
+import com.example.petapp.viewmodel.pet.DayItem
 import com.example.petapp.viewmodel.pet.PetViewModel
 import com.example.petapp.viewmodel.user.LoginViewModel
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
-    private lateinit var recyclerViewHorizontal: RecyclerView
+    private lateinit var recyclerViewHorizontalYourPet: RecyclerView
     private lateinit var buttonAddPet: Button
     private lateinit var petViewModel: PetViewModel
-    private lateinit var petAdapter: YourPetAdapter
+    private lateinit var yourpetAdapter: YourPetAdapter
+    private lateinit var recyclerViewCalendar: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,35 +51,60 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize views
-        recyclerViewHorizontal = view.findViewById(R.id.recyclerViewHorizontal)
+        recyclerViewHorizontalYourPet = view.findViewById(R.id.recyclerViewHorizontal)
         //debug log
-        println("Initializing RecyclerView: $recyclerViewHorizontal")
+        println("Initializing RecyclerView: $recyclerViewHorizontalYourPet")
         buttonAddPet = view.findViewById(R.id.buttonAddPet)
+        recyclerViewCalendar = view.findViewById<RecyclerView>(R.id.rvDays)
 
-        setupRecyclerView()
+        setupYourPetRecyclerView()
+        setupCalenderView()
         loadPets()
 
         // Set up add pet button click listener
         buttonAddPet.setOnClickListener {
-            // Navigate to add pet screen - implement navigation to your add pet fragment/activity
-            // Example using Navigation Component:
-            // findNavController().navigate(R.id.action_homeFragment_to_addPetFragment)
-
-            // Or traditional way:
-            // startActivity(Intent(requireContext(), AddPetActivity::class.java))
+            navigateToAddPet()
         }
     }
 
-    private fun setupRecyclerView() {
-        petAdapter = YourPetAdapter()
+    private fun setupCalenderView() {
+        val days = listOf(
+            DayItem("25", "February", "Tu", "+3"),
+            DayItem("26", "February", "Wed", "+3"),
+            DayItem("27", "February", "Th", "+3"),
+            DayItem("28", "February", "Fr", "+3"),
+            DayItem("01", "February", "Sa", "+3"),
+            DayItem("02", "February", "Su", "+3")
+        )
+
+        val adapter = CalendarAdapter(days)
+
+        recyclerViewCalendar.layoutManager = GridLayoutManager(requireContext(), 2)
+        recyclerViewCalendar.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Additional check for returning to the fragment
+        // This will catch cases where the activity result launcher might not work
+        loadPets()
+    }
+
+    private fun navigateToAddPet() {
+        val intent = Intent(requireContext(), AddPetActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun setupYourPetRecyclerView() {
+        yourpetAdapter = YourPetAdapter()
         //debug log
-        println("Setting up RecyclerView with adapter: $petAdapter")
-        recyclerViewHorizontal.apply {
+        println("Setting up RecyclerView with adapter: $yourpetAdapter")
+        recyclerViewHorizontalYourPet.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = petAdapter
+            adapter = yourpetAdapter
         }
-        println("RecyclerView setup complete with layout manager: ${recyclerViewHorizontal.layoutManager}")
+        println("RecyclerView setup complete with layout manager: ${recyclerViewHorizontalYourPet.layoutManager}")
     }
 
     private fun loadPets() {
@@ -89,29 +118,29 @@ class HomeFragment : Fragment() {
 
         // Get the current user ID from the LoginViewModel
         val userId = loginViewModel.getLoggedInUserId()
-        val hardCodePet = listOf(
-            PetReduceForHome("1", "Pet 1", ""),
-            PetReduceForHome("2", "Pet 2", ""),
-            PetReduceForHome("3", "Pet 3", ""),
-            PetReduceForHome("4", "Pet 4", ""),
-            PetReduceForHome("5", "Pet 5", ""),
-            PetReduceForHome("6", "Pet 6", ""),
-            PetReduceForHome("7", "Pet 7", ""),
-            PetReduceForHome("8", "Pet 8", ""),
-        )
-        petAdapter.submitList(hardCodePet)
+//        val hardCodePet = listOf(
+//            PetReduceForHome("1", "Pet 1", ""),
+//            PetReduceForHome("2", "Pet 2", ""),
+//            PetReduceForHome("3", "Pet 3", ""),
+//            PetReduceForHome("4", "Pet 4", ""),
+//            PetReduceForHome("5", "Pet 5", ""),
+//            PetReduceForHome("6", "Pet 6", ""),
+//            PetReduceForHome("7", "Pet 7", ""),
+//            PetReduceForHome("8", "Pet 8", ""),
+//        )
+//        petAdapter.submitList(hardCodePet)
 
-//        if (userId != null) {
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                val pets = petViewModel.getPetsForHome(userId)
-//                println("Pets for user $userId: $pets") // Debug log
-//                petAdapter.submitList(pets)
-//            }
-//        } else {
-//            // Handle case where user ID is null (e.g., show a message or redirect to login)
-//            redirectToLogin()
-//            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
-//        }
+        if (userId != null) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                val pets = petViewModel.getPetsForHome(userId)
+                println("Pets for user $userId: $pets") // Debug log
+                yourpetAdapter.submitList(pets)
+            }
+        } else {
+            // Handle case where user ID is null (e.g., show a message or redirect to login)
+            redirectToLogin()
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun redirectToLogin() {

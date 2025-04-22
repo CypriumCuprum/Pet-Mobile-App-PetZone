@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [UserEntity::class, PetEntity::class, StatisticTypeEntity::class, PetStatisticEntity::class, ReminderEntity::class, Pet_ReminderEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -70,6 +70,7 @@ abstract class AppDatabase : RoomDatabase() {
                     role = "admin"
                 )
                 userDao.register(admin)
+                println("Admin account created: $admin")
             }
         }
     }
