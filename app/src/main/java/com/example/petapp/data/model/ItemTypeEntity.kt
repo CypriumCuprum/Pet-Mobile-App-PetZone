@@ -16,7 +16,7 @@ fun ItemTypeEntity.getIconResId(): Int {
         "food" -> R.drawable.foodshop
         "vet" -> R.drawable.vetitemshop
         "accessories" -> R.drawable.accessories1
-        "iot" -> R.drawable.foodshop
+        "iot" -> R.drawable.iot_shop
         else -> R.drawable.bg_main_color_15dp_corner
     }
 }
