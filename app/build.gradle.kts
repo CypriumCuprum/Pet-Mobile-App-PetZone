@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -31,13 +32,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         buildConfigField("String", "SERVER_URL", "\"${project.findProperty("SERVER_URL") ?: ""}\"")
-        // Load the API key from secrets.properties
-//        val mapsApiKey = project.findProperty("MAPS_API_KEY")
-//            ?: throw GradleException("MAPS_API_KEY not found in secrets.properties. Please add it.")
-        // Add the API key to the manifest
-        manifestPlaceholders["MAPS_API_KEY"] = ""
-//        // You can keep this if you ALSO need access from Kotlin/Java code
-//        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
     }
 
     buildTypes {
@@ -60,7 +54,6 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
-        viewBinding = true
     }
 }
 
@@ -71,7 +64,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -86,6 +78,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.glide)
     kapt(libs.compiler)
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
 }
