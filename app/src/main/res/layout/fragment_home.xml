@@ -182,156 +182,168 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/category_buttons_container"
-                android:layout_width="0dp"
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
+                android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_categories_title">
 
-                <!-- Food & Nutrition Button -->
                 <LinearLayout
-                    android:id="@+id/btn_food_nutrition"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="18dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_vaccination"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.25">
+                    android:id="@+id/category_buttons_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/home_page_category_circle"
-                        android:contentDescription="Food and Nutrition icon"
-                        android:padding="12dp"
-                        android:src="@drawable/home_page_food_and_nutrition_item" />
+                    <!-- Food & Nutrition Button -->
+                    <LinearLayout
+                        android:id="@+id/btn_food_nutrition"
+                        android:layout_width="90dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/fredoka_medium"
-                        android:gravity="center"
-                        android:text="Food &amp;\nNutrition"
-                        android:textColor="#4CAF50"
-                        android:textSize="12sp" />
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/home_page_category_circle"
+                            android:contentDescription="Food and Nutrition icon"
+                            android:padding="12dp"
+                            android:src="@drawable/home_page_food_and_nutrition_item" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/fredoka_medium"
+                            android:gravity="center"
+                            android:text="Food &amp;\nNutrition"
+                            android:textColor="#4CAF50"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Vaccination Schedule Button -->
+                    <LinearLayout
+                        android:id="@+id/btn_vaccination"
+                        android:layout_width="90dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/home_page_category_circle"
+                            android:contentDescription="Vaccination Schedule icon"
+                            android:padding="12dp"
+                            android:src="@drawable/home_page_syringe_item" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/fredoka_medium"
+                            android:gravity="center"
+                            android:text="Vaccination\nSchedule"
+                            android:textColor="#4CAF50"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Reminder Button -->
+                    <LinearLayout
+                        android:id="@+id/btn_reminder"
+                        android:layout_width="90dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/home_page_category_circle"
+                            android:contentDescription="Reminder icon"
+                            android:padding="12dp"
+                            android:src="@drawable/home_page_bell_item" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/fredoka_medium"
+                            android:gravity="center"
+                            android:text="Reminder"
+                            android:textColor="#4CAF50"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Vet Contact Button -->
+                    <LinearLayout
+                        android:id="@+id/btn_vet_contact"
+                        android:layout_width="90dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/home_page_category_circle"
+                            android:contentDescription="Vet Contact icon"
+                            android:padding="12dp"
+                            android:src="@drawable/home_page_pills_item" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/fredoka_medium"
+                            android:gravity="center"
+                            android:text="Vet\nContact"
+                            android:textColor="#4CAF50"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_medical_report"
+                        android:layout_width="90dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/home_page_category_circle"
+                            android:contentDescription="Vet Contact icon"
+                            android:padding="12dp"
+                            android:src="@drawable/health_note" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/fredoka_medium"
+                            android:gravity="center"
+                            android:text="Medical\nReport"
+                            android:textColor="#4CAF50"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <!-- Vaccination Schedule Button -->
-                <LinearLayout
-                    android:id="@+id/btn_vaccination"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="18dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_reminder"
-                    app:layout_constraintStart_toEndOf="@id/btn_food_nutrition"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.25">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/home_page_category_circle"
-                        android:contentDescription="Vaccination Schedule icon"
-                        android:padding="12dp"
-                        android:src="@drawable/home_page_syringe_item" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/fredoka_medium"
-                        android:gravity="center"
-                        android:text="Vaccination\nSchedule"
-                        android:textColor="#4CAF50"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- Reminder Button -->
-                <LinearLayout
-                    android:id="@+id/btn_reminder"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="18dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_vet_contact"
-                    app:layout_constraintStart_toEndOf="@id/btn_vaccination"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.25">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/home_page_category_circle"
-                        android:contentDescription="Reminder icon"
-                        android:padding="12dp"
-                        android:src="@drawable/home_page_bell_item" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/fredoka_medium"
-                        android:gravity="center"
-                        android:text="Reminder"
-                        android:textColor="#4CAF50"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- Vet Contact Button -->
-                <LinearLayout
-                    android:id="@+id/btn_vet_contact"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="18dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btn_reminder"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.25">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/home_page_category_circle"
-                        android:contentDescription="Vet Contact icon"
-                        android:padding="12dp"
-                        android:src="@drawable/home_page_pills_item" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/fredoka_medium"
-                        android:gravity="center"
-                        android:text="Vet\nContact"
-                        android:textColor="#4CAF50"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </HorizontalScrollView>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -432,7 +444,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.45" />
+            app:layout_constraintGuide_begin="166dp" />
 
         <!-- GridLayout cho 6 card nhỏ bên phải -->
         <androidx.recyclerview.widget.RecyclerView

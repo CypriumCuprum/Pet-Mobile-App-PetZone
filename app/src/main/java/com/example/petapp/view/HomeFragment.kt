@@ -1,5 +1,6 @@
 package com.example.petapp.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.petapp.R
@@ -22,6 +25,7 @@ import com.example.petapp.viewmodel.pet.CalendarAdapter
 import com.example.petapp.viewmodel.pet.DayItem
 import com.example.petapp.viewmodel.pet.PetViewModel
 import com.example.petapp.viewmodel.user.LoginViewModel
+import com.example.petapp.view.medical_report.MedicalReportListFragment
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -30,6 +34,8 @@ class HomeFragment : Fragment() {
     private lateinit var petViewModel: PetViewModel
     private lateinit var yourpetAdapter: YourPetAdapter
     private lateinit var recyclerViewCalendar: RecyclerView
+    private lateinit var btnFoodNutrition: LinearLayout
+    private lateinit var btnMedicalReport: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +62,8 @@ class HomeFragment : Fragment() {
         println("Initializing RecyclerView: $recyclerViewHorizontalYourPet")
         buttonAddPet = view.findViewById(R.id.buttonAddPet)
         recyclerViewCalendar = view.findViewById<RecyclerView>(R.id.rvDays)
+        btnFoodNutrition = view.findViewById(R.id.btn_food_nutrition)
+        btnMedicalReport = view.findViewById(R.id.btn_medical_report)
 
         setupYourPetRecyclerView()
         setupCalenderView()
@@ -65,7 +73,29 @@ class HomeFragment : Fragment() {
         buttonAddPet.setOnClickListener {
             navigateToAddPet()
         }
+
+        clickMedicalReport()
+
     }
+
+    @SuppressLint("CommitTransaction", "SetTextI18n")
+    private fun clickMedicalReport() {
+        btnMedicalReport.setOnClickListener {
+            // navigate to medical report MedicalReportListFragment
+            val medicalReportListFragment = MedicalReportListFragment()
+            val toolbarview =
+                requireActivity().findViewById<View>(R.id.toolbar)
+            val toolbarTextView = toolbarview.findViewById<TextView>(R.id.toolbar_title)
+            toolbarTextView.text = "Medical Report"
+            toolbarview.visibility = View.VISIBLE
+
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.frame_container, medicalReportListFragment)
+            transaction.addToBackStack(null) // Add to back stack if you want to allow back navigation
+            transaction.commit()
+        }
+    }
+
 
     private fun setupCalenderView() {
         val days = listOf(
