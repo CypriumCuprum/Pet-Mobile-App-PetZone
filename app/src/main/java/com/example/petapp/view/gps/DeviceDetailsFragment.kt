@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.petapp.R
+import com.example.petapp.view.YourPetAdapter
+import com.example.petapp.viewmodel.pet.PetViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -19,15 +22,16 @@ private const val ARG_PARAM2 = "param2"
  */
 class DeviceDetailsFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var recyclerViewHorizontalYourPet: RecyclerView
+    private lateinit var petViewModel: PetViewModel
+    private lateinit var yourpetAdapter: YourPetAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        petViewModel = ViewModelProvider(
+            this,
+            PetViewModel.Factory(requireActivity().application)
+        )[PetViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -36,6 +40,28 @@ class DeviceDetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_device_details, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialize views
+        recyclerViewHorizontalYourPet = view.findViewById(R.id.recyclerViewHorizontal)
+
+        setupYourPetRecyclerView()
+
+    }
+
+    private fun setupYourPetRecyclerView() {
+        yourpetAdapter = YourPetAdapter()
+        //debug log
+        println("Setting up RecyclerView with adapter: $yourpetAdapter")
+        recyclerViewHorizontalYourPet.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = yourpetAdapter
+        }
+        println("RecyclerView setup complete with layout manager: ${recyclerViewHorizontalYourPet.layoutManager}")
     }
 
     companion object {
