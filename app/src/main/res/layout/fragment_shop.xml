@@ -20,8 +20,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"/>
 
     <!-- Layout chính chứa RecyclerView (main_activity.xml) -->
     <androidx.constraintlayout.widget.ConstraintLayout

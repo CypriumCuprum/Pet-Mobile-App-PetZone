@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -37,6 +38,11 @@ class ItemDetail : Fragment() {
     private lateinit var toolbar: RelativeLayout
     private lateinit var toolbarTitle: TextView
     private lateinit var btnBack: ImageView
+    private lateinit var tvQuantity: TextView
+    private lateinit var btnIncrease: Button
+    private lateinit var btnDecrease: Button
+
+    private var quantity = 1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,6 +57,24 @@ class ItemDetail : Fragment() {
         // Lấy dữ liệu từ arguments truyền thống
         arguments?.let {
             item = it.getParcelable(ARG_PRODUCT_ITEM) ?: return
+        }
+
+        tvQuantity = view.findViewById(R.id.tvSelectedQuantity)
+        btnDecrease = view.findViewById(R.id.btnDecrease)
+        btnIncrease = view.findViewById(R.id.btnIncrease)
+
+        btnIncrease.setOnClickListener{
+            if(quantity<99){
+                quantity++
+                tvQuantity.text = quantity.toString()
+            }
+        }
+
+        btnDecrease.setOnClickListener{
+            if(quantity>1){
+                quantity--
+                tvQuantity.text = quantity.toString()
+            }
         }
 
         initViews(view)

@@ -36,7 +36,7 @@ class ItemAdapter(private var items: List<ItemEntity>, private val onItemClick: 
         holder.tvName.text = item.name
         holder.tvDescription.text = item.description
         holder.tvQuantity.text = "Quantity: ${item.quantity}"
-        holder.tvManufacturer.text = "Manufacturer: ${item.manufacturer}"
+        holder.tvManufacturer.text = "${item.manufacturer}"
         holder.tvPrice.text = "Price: ${item.price}"
         // Load ảnh từ URL
         Log.d("debug1", item.image_url)
