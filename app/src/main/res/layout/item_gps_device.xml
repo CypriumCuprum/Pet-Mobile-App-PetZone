@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:background="@drawable/bg_white_rounded_corner_8dp"
+    android:backgroundTint="@color/bg_grey"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewSmartCollarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Smart Collar"
+        android:textColor="#1B5E20"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewBatteryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingStart="10dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="4dp"
+        android:text="Battery"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSmartCollarTitle" />
+
+
+    <TextView
+        android:id="@+id/textViewBatteryPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="70%"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/textViewBatteryLabel"
+        app:layout_constraintStart_toEndOf="@id/textViewBatteryLabel"
+        app:layout_constraintTop_toTopOf="@id/textViewBatteryLabel" />
+
+    <!-- WiFi Icon -->
+    <ImageView
+        android:id="@+id/imageViewWifi"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/signal_gps"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewBatteryLabel"
+        app:tint="@android:color/darker_gray" />
+
+    <!-- Connected Status -->
+    <TextView
+        android:id="@+id/textViewConnectionStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Connected"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewWifi"
+        app:layout_constraintStart_toEndOf="@id/imageViewWifi"
+        app:layout_constraintTop_toTopOf="@id/imageViewWifi" />
+
+    <!-- Collar Image -->
+    <ImageView
+        android:id="@+id/imageViewCollar"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="From Yellow"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toEndOf="@+id/textViewConnectionStatus"
+        app:layout_constraintTop_toBottomOf="@id/imageViewCollar"
+        app:layout_constraintVertical_bias="0.658" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

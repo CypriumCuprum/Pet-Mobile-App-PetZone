@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.petapp.view.HomeFragment
+import com.example.petapp.view.gps.GPSFragment
 import com.example.petapp.view.petHealth.PetHealth
 import com.example.petapp.view.reminder.Reminder1Fragment
 // import com.example.petapp.view.reminder.Add_reminderFragment
@@ -75,6 +76,11 @@ class MainActivity : AppCompatActivity() {
                     title = "Profile" // Hoặc "Pet Health"
                 }
 
+                R.id.nav_gps -> {
+                    selectedFragment = GPSFragment()
+                    title = "GPS"
+                }
+
                 else -> {
                     selectedFragment = HomeFragment()
                     // title = "Home"
@@ -114,4 +120,5 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationView.selectedItemId = R.id.nav_home
         }
     }
+    
 }

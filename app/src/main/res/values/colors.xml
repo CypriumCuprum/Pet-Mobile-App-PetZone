@@ -25,6 +25,7 @@
 
 
     <!-- Màu chữ cho các button -->
+    <color name="time_setting">#2F4AA5</color>
 
     <!-- Màu viền -->
     <color name="border_color_reminder">#AAAAAA</color>

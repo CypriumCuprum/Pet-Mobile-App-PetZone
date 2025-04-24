@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.gps.GPSFragment">
+
+    <!-- Container cho Google Map -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/preview_map_placeholder" />
+
+    <Button
+        android:id="@+id/gpsDeviceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/design_default_color_primary"
+        android:drawablePadding="8dp"
+        android:text="GPS Device"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/petInfoCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible"> <!-- tools:visibility dùng để xem trước trong layout editor -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Icon thú cưng lớn trong thẻ -->
+            <ImageView
+                android:id="@+id/petDetailIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/accessories1" /> <!-- Ảnh placeholder -->
+
+            <!-- Tên thú cưng -->
+            <TextView
+                android:id="@+id/petNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/petDetailIcon"
+                app:layout_constraintTop_toTopOf="@id/petDetailIcon"
+                tools:text="Tanjiro Kamado" />
+
+            <!-- Icon ghim nhỏ -->
+            <ImageView
+                android:id="@+id/locationPinIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="@id/petNameTextView"
+                app:layout_constraintTop_toBottomOf="@id/petNameTextView"
+                app:srcCompat="@drawable/smileys" />
+
+            <!-- Thông tin khoảng cách -->
+            <TextView
+                android:id="@+id/distanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/locationPinIcon"
+                app:layout_constraintStart_toEndOf="@id/locationPinIcon"
+                app:layout_constraintTop_toTopOf="@id/locationPinIcon"
+                tools:text="200m away from you" />
+
+            <!-- Icon pin nhỏ -->
+            <ImageView
+                android:id="@+id/batteryIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/distanceTextView"
+                app:layout_constraintStart_toEndOf="@id/distanceTextView"
+                app:layout_constraintTop_toTopOf="@id/distanceTextView"
+                app:srcCompat="@drawable/shop" />
+
+            <!-- Thông tin pin -->
+            <TextView
+                android:id="@+id/batteryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/batteryIcon"
+                app:layout_constraintStart_toEndOf="@id/batteryIcon"
+                app:layout_constraintTop_toTopOf="@id/batteryIcon"
+                tools:text="70%" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

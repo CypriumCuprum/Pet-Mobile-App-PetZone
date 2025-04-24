@@ -27,7 +27,7 @@ class DoingLoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_doing_login)
-
+        val appDatabase = AppDatabase.getInstance(this)
         // Check if user is already logged in
         if (viewModel.isUserLoggedIn()) {
             navigateToMain()
