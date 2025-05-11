@@ -31,10 +31,10 @@ data class GPSEntity(
     val longitude: Double = -1.0,
 
     @ColumnInfo(name = "status")
-    val status: String,
+    val status: String = "Offline",  // default status
 
     @ColumnInfo(name = "battery")
-    val battery: String,
+    val battery: Int = -1,  // default battery level
 
     @ColumnInfo(name = "image_url")
     val imageUrl: String? = null,

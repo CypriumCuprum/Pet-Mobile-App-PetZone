@@ -7,11 +7,19 @@ import com.example.petapp.data.model.UserEntity
 import com.example.petapp.data.repository.UserRepository
 import kotlinx.coroutines.launch
 import android.util.Log
+import com.example.petapp.data.local.AppDatabase
+import com.example.petapp.data.repository.PetRepository
 
 class LoginViewModel(
-    private val repository: UserRepository,
     application: Application
 ) : AndroidViewModel(application) {
+
+    private val repository: UserRepository
+
+    init {
+        val db = AppDatabase.getInstance(application)
+        repository = UserRepository(db.userDao())
+    }
 
     // SharedPreferences Constants
     companion object {
@@ -87,14 +95,11 @@ class LoginViewModel(
     }
 
     // Factory class for creating the ViewModel with Application context
-    class Factory(
-        private val repository: UserRepository,
-        private val application: Application
-    ) : ViewModelProvider.Factory {
+    class Factory(private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return LoginViewModel(repository, application) as T
+                return LoginViewModel(application) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

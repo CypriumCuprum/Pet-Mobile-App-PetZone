@@ -18,7 +18,6 @@ class DoingLoginActivity : AppCompatActivity() {
 
     private val viewModel: LoginViewModel by viewModels {
         LoginViewModel.Factory(
-            UserRepository(AppDatabase.getInstance(applicationContext).userDao()),
             application
         )
     }

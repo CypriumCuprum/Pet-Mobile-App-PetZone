@@ -1,33 +1,50 @@
 package com.example.petapp.view.gps
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.petapp.R
+import com.example.petapp.data.model.GPSEntity
+import com.example.petapp.viewmodel.GPSDeviceViewModel
+import com.example.petapp.viewmodel.gps.GPSDeviceAdapter
+import com.example.petapp.viewmodel.pet.PetViewModel
+import com.example.petapp.viewmodel.user.LoginViewModel
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [GPSDeviceFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GPSDeviceFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var addDeviceButton: AppCompatButton
+
+    private lateinit var viewModel: GPSDeviceViewModel
+    private lateinit var adapter: GPSDeviceAdapter
+    private lateinit var petViewModel: PetViewModel
+    private lateinit var gpsViewModel: GPSDeviceViewModel
+    private lateinit var loginViewModel: LoginViewModel
+
+    // Pet ID from arguments
+    private var petIdList: List<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        petViewModel = ViewModelProvider(
+            this,
+            PetViewModel.Factory(requireActivity().application)
+        )[PetViewModel::class.java]
+        gpsViewModel = ViewModelProvider(
+            this,
+            GPSDeviceViewModel.Factory(requireActivity().application)
+        )[GPSDeviceViewModel::class.java]
+        loginViewModel = ViewModelProvider(
+            this,
+            LoginViewModel.Factory(requireActivity().application)
+        )[LoginViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -38,22 +55,71 @@ class GPSDeviceFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_g_p_s_device, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialize views
+        recyclerView = view.findViewById(R.id.gpsdevices_recycler_view)
+        addDeviceButton = view.findViewById(R.id.buttonAddDevice)
+
+        setupViewModel()
+        setupRecyclerView()
+        setupAddDeviceButton()
+        loadGPSDevices()
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this)[GPSDeviceViewModel::class.java]
+    }
+
+    private fun setupRecyclerView() {
+        adapter = GPSDeviceAdapter(
+            petRepository = petViewModel.getRepository(),
+            onItemClick = { gpsDevice ->
+                // Navigate to device details or map screen
+                // You can implement this based on your app's navigation
+            }
+        )
+
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
+    }
+
+    private fun setupAddDeviceButton() {
+        addDeviceButton.setOnClickListener {
+            val gpsDeviceDetailsFragment = DeviceDetailsFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frame_container, gpsDeviceDetailsFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+
+        }
+    }
+
+    private fun loadGPSDevices() {
+        lifecycleScope.launch {
+            petIdList = loginViewModel.getLoggedInUserId()?.let {
+                petViewModel.getPetIdListByUserId(it)
+            }
+            val gpsDeviceList = petIdList?.flatMap { petId ->
+                gpsViewModel.getGPSDevicesForPet(petId)
+            } ?: emptyList()
+            gpsDeviceList.forEach { gpsDevice ->
+                gpsViewModel.getGPSDeviceInfoByAPI(gpsDevice.id)
+            }
+            val gpsDeviceListUpdate = petIdList?.flatMap { petId ->
+                gpsViewModel.getGPSDevicesForPet(petId)
+            } ?: emptyList()
+            adapter.submitList(gpsDeviceListUpdate)
+        }
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GPSDeviceFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(petId: String) =
             GPSDeviceFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString("pet_id", petId)
                 }
             }
     }

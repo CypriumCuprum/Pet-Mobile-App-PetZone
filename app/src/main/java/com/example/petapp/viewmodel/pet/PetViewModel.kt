@@ -21,6 +21,21 @@ class PetViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getPetByUserId(userId)
     }
 
+    //get pet id list by user id
+    suspend fun getPetIdListByUserId(userId: String): List<String>? {
+        return repository.getPetIdListByUserId(userId)
+    }
+
+    // get pet by id
+    suspend fun getPetById(petId: String): PetEntity? {
+        return repository.getPetById(petId)
+    }
+
+    // get repository
+    fun getRepository(): PetRepository {
+        return repository
+    }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -30,4 +45,5 @@ class PetViewModel(application: Application) : AndroidViewModel(application) {
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
+
 }
