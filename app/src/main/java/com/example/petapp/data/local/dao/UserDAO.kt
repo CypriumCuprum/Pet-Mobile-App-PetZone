@@ -18,7 +18,7 @@ interface UserDAO {
     suspend fun login(username: String, password: String): UserEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun register(user: UserEntity)
+    suspend fun register(user: UserEntity): Long
 
     @Update
     suspend fun updateUser(user: UserEntity)

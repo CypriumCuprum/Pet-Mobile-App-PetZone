@@ -141,7 +141,6 @@ class HomeFragment : Fragment() {
         val loginViewModel = ViewModelProvider(
             requireActivity(),
             LoginViewModel.Factory(
-                UserRepository(AppDatabase.getInstance(requireActivity().application).userDao()),
                 requireActivity().application
             )
         )[LoginViewModel::class.java]

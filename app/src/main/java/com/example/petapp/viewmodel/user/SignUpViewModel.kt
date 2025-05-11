@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.petapp.data.model.UserEntity
 import com.example.petapp.data.repository.UserRepository
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class SignUpViewModel(private val repository: UserRepository) : ViewModel() {
     private val _signUpResult = MutableLiveData<Boolean>(false)
@@ -61,6 +62,7 @@ class SignUpViewModel(private val repository: UserRepository) : ViewModel() {
 
                 // 4. Tạo đối tượng UserEntity mới
                 val newUser = UserEntity(
+                    id = UUID.randomUUID().toString(), // Tạo ID ngẫu nhiên
                     username = username,
                     password = hashedPassword, // Lưu mật khẩu đã hash
                     fullname = yourname
