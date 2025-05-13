@@ -20,7 +20,7 @@ class PetStatisticRepository(private val petStatisticDao: PetStatisticDAO) {
         petStatisticDao.delete(petStatistic)
     }
 
-    fun getPetStatistics(petId: UUID):  LiveData<List<PetStatisticEntity>> {
+    fun getPetStatistics(petId: String):  LiveData<List<PetStatisticEntity>> {
         return petStatisticDao.getByPetId(petId)
     }
 
@@ -32,11 +32,19 @@ class PetStatisticRepository(private val petStatisticDao: PetStatisticDAO) {
         return petStatisticDao.getByType(typeId)
     }
 
-    fun getPetStatisticByTypeAndPet(petId: UUID, typeId: UUID): LiveData<List<PetStatisticEntity>> {
+    fun getPetStatisticByTypeAndPet(petId: String, typeId: UUID): LiveData<List<PetStatisticEntity>> {
         return petStatisticDao.getByTypeAndPet(petId, typeId)
     }
 
     suspend fun getCount(): Int {
         return petStatisticDao.getCount()
+    }
+
+    suspend fun getLatestPetStatistic(petId: String, statisticTypeId: UUID): PetStatisticEntity? {
+        return petStatisticDao.getLatestPetStatistic(petId, statisticTypeId)
+    }
+
+    suspend fun getPetStatisticsByTypeAndPetId(petId: String, statisticTypeId: UUID): List<PetStatisticEntity> {
+        return petStatisticDao.getByPetIdAndStatisticType(petId, statisticTypeId)
     }
 }

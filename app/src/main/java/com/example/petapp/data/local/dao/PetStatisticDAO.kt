@@ -28,15 +28,27 @@ interface PetStatisticDAO {
     suspend fun getById(id: UUID): PetStatisticEntity?
 
     @Query("SELECT * FROM pet_statistic WHERE petid = :petId ORDER BY recorded_at DESC")
-    fun getByPetId(petId: UUID): LiveData<List<PetStatisticEntity>>
+    fun getByPetId(petId: String): LiveData<List<PetStatisticEntity>>
 
     @Query("SELECT * FROM pet_statistic WHERE statistic_typeid = :statisticTypeId ORDER BY recorded_at DESC")
     fun getByType(statisticTypeId: UUID): LiveData<List<PetStatisticEntity>>
 
     @Query("SELECT * FROM pet_statistic WHERE statistic_typeid = :statisticTypeId AND petid= :petId ORDER BY recorded_at DESC")
-    fun getByTypeAndPet(petId: UUID, statisticTypeId: UUID): LiveData<List<PetStatisticEntity>>
+    fun getByTypeAndPet(petId: String, statisticTypeId: UUID): LiveData<List<PetStatisticEntity>>
 
     @Query("SELECT COUNT(*) FROM statistic_type")
     suspend fun getCount(): Int
+
+    @Query("""
+    SELECT * FROM pet_statistic 
+    WHERE petid = :petId AND statistic_typeid = :statisticTypeId
+    ORDER BY recorded_at DESC 
+    LIMIT 1
+""")
+    suspend fun getLatestPetStatistic(petId: String, statisticTypeId: UUID): PetStatisticEntity?
+
+    @Query("SELECT * FROM pet_statistic WHERE petid = :petId AND statistic_typeid = :statisticTypeId ORDER BY recorded_at DESC")
+    suspend fun getByPetIdAndStatisticType(petId: String, statisticTypeId: UUID): List<PetStatisticEntity>
+
 
 }

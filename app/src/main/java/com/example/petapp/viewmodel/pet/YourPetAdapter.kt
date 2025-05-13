@@ -1,10 +1,12 @@
 package com.example.petapp.view
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -53,6 +55,20 @@ class YourPetAdapter :
         }
 
         private fun executeOnClickPet(pet: PetEntity) {
+            val context = itemView.context
+            val activity = context as? AppCompatActivity ?: return
+            val toolbar = activity.findViewById<View>(R.id.toolbar)
+            toolbar.visibility = View.VISIBLE
+            val petHealthFragment = PetHealth()
+            val bundle = Bundle().apply {
+                putString("petId", pet.id) // hoặc putInt nếu id là Int
+            }
+            petHealthFragment.arguments = bundle
+
+            activity.supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, petHealthFragment) // fragment_container là ID của container trong activity_main.xml
+                .addToBackStack(null) // Cho phép back lại fragment trước đó
+                .commit()
         }
     }
 

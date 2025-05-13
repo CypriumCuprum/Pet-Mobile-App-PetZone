@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.glide)
     kapt(libs.compiler)
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)

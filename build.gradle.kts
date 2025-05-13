@@ -10,3 +10,4 @@ buildscript {
         classpath(libs.secrets.gradle.plugin)
     }
 }
+

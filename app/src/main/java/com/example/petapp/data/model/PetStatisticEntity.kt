@@ -46,7 +46,7 @@ data class PetStatisticEntity(
     val updated_at: String = Instant.now().toString(),
 
     @ColumnInfo(name = "petid")
-    val petid: UUID,
+    val petid: String,
 
     @ColumnInfo(name = "statistic_typeid")
     val statistic_typeid: UUID,

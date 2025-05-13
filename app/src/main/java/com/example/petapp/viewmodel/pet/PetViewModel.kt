@@ -21,6 +21,9 @@ class PetViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getPetByUserId(userId)
     }
 
+    suspend fun getPetById(petId: String): PetEntity {
+        return repository.getPetById(petId)[0]
+    }
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
