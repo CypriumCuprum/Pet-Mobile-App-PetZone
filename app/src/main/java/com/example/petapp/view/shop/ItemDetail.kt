@@ -2,6 +2,9 @@ package com.example.petapp.view.shop
 
 import android.content.ClipData.Item
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +14,21 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.petapp.BuildConfig
 import com.example.petapp.R
+import com.example.petapp.data.model.CartItemCreateEntity
 import com.example.petapp.data.model.ItemEntity
+import com.example.petapp.viewmodel.shop.CartItemViewModel
+import com.example.petapp.viewmodel.shop.ItemTypeViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.NumberFormat
 import java.util.Locale
+import java.util.UUID
 
 class ItemDetail : Fragment() {
 
@@ -41,6 +49,8 @@ class ItemDetail : Fragment() {
     private lateinit var tvQuantity: TextView
     private lateinit var btnIncrease: Button
     private lateinit var btnDecrease: Button
+    private lateinit var viewModel: CartItemViewModel
+    private var isMessageShown = false
 
     private var quantity = 1
     override fun onCreateView(
@@ -59,23 +69,6 @@ class ItemDetail : Fragment() {
             item = it.getParcelable(ARG_PRODUCT_ITEM) ?: return
         }
 
-        tvQuantity = view.findViewById(R.id.tvSelectedQuantity)
-        btnDecrease = view.findViewById(R.id.btnDecrease)
-        btnIncrease = view.findViewById(R.id.btnIncrease)
-
-        btnIncrease.setOnClickListener{
-            if(quantity<99){
-                quantity++
-                tvQuantity.text = quantity.toString()
-            }
-        }
-
-        btnDecrease.setOnClickListener{
-            if(quantity>1){
-                quantity--
-                tvQuantity.text = quantity.toString()
-            }
-        }
 
         initViews(view)
         setupToolbar()
@@ -95,6 +88,13 @@ class ItemDetail : Fragment() {
         toolbar = requireActivity().findViewById(R.id.toolbar)
         toolbarTitle = requireActivity().findViewById(R.id.toolbar_title)
         btnBack = requireActivity().findViewById(R.id.left_icon_toolbar)
+        tvQuantity = view.findViewById(R.id.tvSelectedQuantity)
+        btnDecrease = view.findViewById(R.id.btnDecrease)
+        btnIncrease = view.findViewById(R.id.btnIncrease)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[CartItemViewModel::class.java]
     }
 
     private fun setupToolbar() {
@@ -125,10 +125,45 @@ class ItemDetail : Fragment() {
     }
 
     private fun setupListeners() {
-        // Xử lý sự kiện khi người dùng nhấn thêm vào giỏ hàng
+        btnIncrease.setOnClickListener{
+            if(quantity<tvQuantityDetail.text.toString().toInt()){
+                quantity++
+                tvQuantity.text = quantity.toString()
+            } else if (!isMessageShown) {
+                isMessageShown = true
+                Toast.makeText(context, "Cannot increase further. Maximum quantity reached!", Toast.LENGTH_SHORT).show()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    isMessageShown = false
+                }, 1000)
+            }
+        }
+
+        btnDecrease.setOnClickListener{
+            if(quantity>1){
+                quantity--
+                tvQuantity.text = quantity.toString()
+            } else if (!isMessageShown) {
+                isMessageShown = true
+                Toast.makeText(context, "Quantity cannot be less than 1", Toast.LENGTH_SHORT).show()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    isMessageShown = false
+                }, 1000)
+            }
+        }
+
         btnAddToCart.setOnClickListener {
             // TODO: Thêm sản phẩm vào giỏ hàng
-            Toast.makeText(context, "${item.name} has been added to your cart", Toast.LENGTH_SHORT).show()
+            val userId = UUID.fromString("3d8f1550-0abb-11f0-992e-0250e6cba39f")
+            val quantity = tvQuantity.text
+            val itemId = item.id
+            val cartItemCreate = CartItemCreateEntity(quantity.toString().toInt(), itemId, userId)
+            viewModel.addToCart(cartItemCreate) { success, message ->
+                Toast.makeText(
+                    context,
+                    message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

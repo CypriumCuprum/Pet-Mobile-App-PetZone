@@ -71,6 +71,14 @@ class Shop : Fragment() {
         val toolbarTitle = requireActivity().findViewById<TextView>(R.id.toolbar_title)
         cartIcon.setImageResource(R.drawable.cart)
         toolbarTitle.setText(R.string.shop)
+        cartIcon.setOnClickListener {
+            val cartFragment = Cart() // thay bằng tên Fragment giỏ hàng thật sự của bạn
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, cartFragment) // nhớ thay `frame_container` bằng ID layout chứa Fragment
+                .addToBackStack(null)
+                .commit()
+        }
+
 
         recyclerView = view.findViewById(R.id.recyclerShopView)
         recyclerView.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)

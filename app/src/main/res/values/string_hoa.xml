@@ -103,4 +103,13 @@
     <string name="description">Description</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="shop">Shop</string>
+    <string name="cart">Cart</string>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="colorGreen">#4CAF50</color>
+    <color name="colorGray">#9E9E9E</color>
+    <color name="colorLightGray">#F5F5F5</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
 </resources>
