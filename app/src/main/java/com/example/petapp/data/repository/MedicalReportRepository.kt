@@ -4,11 +4,17 @@ import com.example.petapp.data.local.dao.ImageMedicalReportDAO
 import com.example.petapp.data.local.dao.MedicalReportDAO
 import com.example.petapp.data.model.ImageMedicalReportEntity
 import com.example.petapp.data.model.MedicalReportEntity
+import com.example.petapp.data.model.MedicalReportWithPet
 
 class MedicalReportRepository(
     private val medicalReportDAO: MedicalReportDAO,
     private val imageMedicalReportDAO: ImageMedicalReportDAO
 ) {
+
+    suspend fun getMedicalReportById(medicalReportId: String?): MedicalReportEntity {
+        return medicalReportDAO.getMedicalReportById(medicalReportId)
+    }
+
     suspend fun getAllMedicalReportsByPetId(petId: String): List<MedicalReportEntity> {
         return medicalReportDAO.getMedicalReportByPetId(petId)
     }
@@ -24,4 +30,25 @@ class MedicalReportRepository(
     suspend fun createImageMedicalReport(imageMedicalReport: ImageMedicalReportEntity): Long {
         return imageMedicalReportDAO.createImageMedicalReport(imageMedicalReport)
     }
+
+    suspend fun getAllMedicalReportByUserId(userId: String): List<MedicalReportWithPet> {
+        return medicalReportDAO.getAllMedicalReportByUserId(userId)
+    }
+
+    suspend fun getAllMedicalReportByUserIdWithFilterAndSort(
+        userId: String,
+        numItem: Int,
+        page: Int,
+        startDate: String,
+        endDate: String
+    ): List<MedicalReportWithPet> {
+        return medicalReportDAO.getAllMedicalReportByUserIdWithFilterAndSort(
+            userId,
+            numItem,
+            page,
+            startDate,
+            endDate
+        )
+    }
+
 }

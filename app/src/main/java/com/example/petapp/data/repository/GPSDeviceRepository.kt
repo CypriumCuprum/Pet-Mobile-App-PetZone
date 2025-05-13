@@ -25,10 +25,20 @@ class GPSDeviceRepository(private val gpsDeviceDAO: GPSDeviceDAO) {
             image_url = gpsDevice.imageUrl,
             petid = gpsDevice.petId
         )
-        val response = apiService.createGPSDevice(request)
-        if (!response.isSuccessful) {
+        try {
+            val response = apiService.createGPSDevice(request)
+            if (!response.isSuccessful) {
+                println("Error creating GPS device: ${response.errorBody()}")
+                return -1
+            }
+        } catch (e: Exception) {
+            println("Error creating GPS device: ${e.message}")
             return -1
         }
+//        val response = apiService.createGPSDevice(request)
+//        if (!response.isSuccessful) {
+//            return -1
+//        }
         // Insert the GPS device into the local database
         return gpsDeviceDAO.insertGPSDevice(gpsDevice)
     }

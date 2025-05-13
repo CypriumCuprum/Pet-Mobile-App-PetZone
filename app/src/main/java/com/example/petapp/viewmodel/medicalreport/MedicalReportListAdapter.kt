@@ -11,35 +11,34 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-// Define view type constants (can be inside or outside the adapter)
+// Define view type constants
 private const val VIEW_TYPE_HEADER = 0
 private const val VIEW_TYPE_ITEM = 1
 
-// Sealed class to represent different list item types (can be inside or outside)
+// Sealed class to represent different list item types
 sealed class ListItem {
-    data class HeaderItem(val monthYear: String) : ListItem() // e.g., "05/2024"
+    data class HeaderItem(val monthYear: String) : ListItem()
     data class ReportItem(val report: MedicalReportExtend) : ListItem()
 }
 
+// Interface for click events
+interface OnReportItemClickListener {
+    fun onReportItemClicked(reportId: String)
+}
 
 class MedicalReportListAdapter(
-    private var items: List<ListItem> // Use the sealed class list
+    private var items: List<ListItem>,
+    private val itemClickListener: OnReportItemClickListener // <--- THAY ĐỔI: Thêm listener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    // SimpleDateFormat for parsing the input date string (adjust if format is different)
-    // IMPORTANT: Ensure MedicalReportExtend.createdAt matches this format!
     private val inputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
-    // SimpleDateFormat for displaying only day/month in the item card
     private val displayDateFormat = SimpleDateFormat("dd/MM", Locale.getDefault())
 
-    // --- ViewHolder for Header ---
     inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val headerTextView: TextView =
-            itemView.findViewById(R.id.textViewMonthHeader) // Add this ID to your header layout
+            itemView.findViewById(R.id.textViewMonthHeader)
     }
 
-    // --- ViewHolder for Report Item ---
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.textViewTitle)
         val dateTextView: TextView = itemView.findViewById(R.id.textViewDate)
@@ -47,15 +46,15 @@ class MedicalReportListAdapter(
         val veterinarianTextView: TextView = itemView.findViewById(R.id.textViewVeterinarian)
         val hospitalTextView: TextView = itemView.findViewById(R.id.textViewHospital)
 
-        // Add click listener if needed
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = items[position]
                     if (item is ListItem.ReportItem) {
-                        // pass medical report id to the next fragment
-                        val reportId = item.report.id
+                        // --- THAY ĐỔI: Gọi listener ---
+                        itemClickListener.onReportItemClicked(item.report.id)
+                        // val reportId = item.report.id // Dòng này không cần thiết nữa nếu bạn chỉ muốn gọi listener
                     }
                 }
             }
@@ -66,8 +65,9 @@ class MedicalReportListAdapter(
         return when (items[position]) {
             is ListItem.HeaderItem -> VIEW_TYPE_HEADER
             is ListItem.ReportItem -> VIEW_TYPE_ITEM
+            // else -> throw IllegalArgumentException("Invalid item type at position $position") // Gỡ bỏ else hoặc xử lý cẩn thận
             else -> {
-                throw IllegalArgumentException("Invalid item type")
+                throw IllegalArgumentException("Invalid item type at position $position")
             }
         }
     }
@@ -80,7 +80,7 @@ class MedicalReportListAdapter(
                     R.layout.item_header_for_medical_report_list,
                     parent,
                     false
-                ) // Use your header layout file
+                )
                 HeaderViewHolder(view)
             }
 
@@ -89,14 +89,11 @@ class MedicalReportListAdapter(
                     R.layout.item_medical_report_card,
                     parent,
                     false
-                ) // Use your item layout file
+                )
                 ItemViewHolder(view)
             }
 
-
-            else -> {
-                throw IllegalArgumentException("Invalid view type")
-            }
+            else -> throw IllegalArgumentException("Invalid view type: $viewType")
         }
     }
 
@@ -112,34 +109,31 @@ class MedicalReportListAdapter(
                 val report = currentItem.report
 
                 itemHolder.titleTextView.text = report.title
-                itemHolder.petTextView.text = report.petName // Assuming petName is correct
+                itemHolder.petTextView.text = report.petName
                 itemHolder.veterinarianTextView.text = report.veterinarian
                 itemHolder.hospitalTextView.text = report.hospital
 
-                // Parse and Format Date for display (dd/MM)
                 try {
                     val date = inputDateFormat.parse(report.createdAt)
                     if (date != null) {
                         itemHolder.dateTextView.text = displayDateFormat.format(date)
                     } else {
-                        itemHolder.dateTextView.text = "N/A" // Or keep original string
+                        itemHolder.dateTextView.text = "N/A"
                     }
                 } catch (e: ParseException) {
-                    // Handle parsing error, maybe show the original string or an error indicator
-                    itemHolder.dateTextView.text = report.createdAt // Fallback
+                    itemHolder.dateTextView.text = report.createdAt
                     e.printStackTrace()
                 }
             }
-
+            // else -> {} // Không cần thiết nếu getItemViewType đã xử lý các trường hợp
             else -> {}
         }
     }
 
     override fun getItemCount(): Int = items.size
 
-    // Function to update the list data (useful when filtering or loading new data)
     fun updateData(newItems: List<ListItem>) {
         items = newItems
-        notifyDataSetChanged() // Consider using DiffUtil for better performance
+        notifyDataSetChanged()
     }
 }

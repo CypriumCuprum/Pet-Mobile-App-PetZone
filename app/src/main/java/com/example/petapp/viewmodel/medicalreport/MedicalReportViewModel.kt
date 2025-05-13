@@ -9,7 +9,9 @@ import com.example.petapp.data.model.ImageMedicalReportEntity
 import com.example.petapp.data.model.MedicalReportEntity
 import com.example.petapp.data.model.submodel.MedicalReportExtend
 import com.example.petapp.data.repository.MedicalReportRepository
+import com.example.petapp.view.medical_report.ListItem
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -53,14 +55,103 @@ class MedicalReportViewModel(application: Application) : AndroidViewModel(applic
                     imageUrl = imageUrl,
                     medicalReportId = medicalReportId
                 )
-                if (check.isNullOrBlank()) {
-                    repository.createImageMedicalReport(imageMedicalReport)
-                }
+//                if (check.isNullOrBlank()) {
+//                    println("check in medical report view model: $check")
+                repository.createImageMedicalReport(imageMedicalReport)
+//                }
             }
         } catch (e: Exception) {
             // Handle the exception
             e.printStackTrace()
         }
+    }
+
+    suspend fun getAllMedicalReportByUserIdWithFilterAndSort(
+        userId: String,
+        numItem: Int,
+        page: Int,
+        startDate: String,
+        endDate: String
+    ): List<ListItem> {
+        val formatterInput = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        val dateFormatForQuery = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+        val startDateFormatted =
+            LocalDate.parse(startDate, formatterInput).atStartOfDay()
+                .format(dateFormatForQuery) // Parse the start date string to OffsetDateTime
+
+        // Parse the end date string to OffsetDateTime
+        val endDateFormatted = LocalDate.parse(endDate, formatterInput)
+            .plusDays(1) // Add one day to include the end date
+            .format(dateFormatForQuery)
+        val medicalReportWithPet = repository.getAllMedicalReportByUserIdWithFilterAndSort(
+            userId,
+            numItem,
+            page,
+            startDateFormatted,
+            endDateFormatted
+        )
+        val grouped_list = mutableListOf<ListItem>()
+        val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        val monthYearFormat = DateTimeFormatter.ofPattern("MM/yyyy", Locale.getDefault())
+        var lastestMonthYear: String? = null
+        // medicalReportWithPet.created_at is in ISO 8601 format
+
+        medicalReportWithPet.forEach {
+            val imageMedicalReport =
+                repository.getAllImageMedicalReportByMedicalReportId(it.report.id)
+            val imageUrlList = imageMedicalReport.map { it.imageUrl }
+            println("imageMedicalReport in medical report view model: $imageMedicalReport")
+
+            val parsedDateTime: OffsetDateTime = OffsetDateTime.parse(it.report.createdAt)
+            val formattedMonthYear = monthYearFormat.format(parsedDateTime)
+            val formattedDateSave = parsedDateTime.format(outputFormatter)
+
+            if (lastestMonthYear == null || lastestMonthYear != formattedMonthYear) {
+                lastestMonthYear = formattedMonthYear
+                grouped_list.add(ListItem.HeaderItem(formattedMonthYear))
+            }
+            val medicalReportExtend = MedicalReportExtend(
+                id = it.report.id,
+                title = it.report.title,
+                hospital = it.report.hospital,
+                veterinarian = it.report.veterinarian,
+                description = it.report.description,
+                createdAt = formattedDateSave,
+                petName = it.petName,
+                images = imageUrlList
+            )
+            grouped_list.add(ListItem.ReportItem(medicalReportExtend))
+        }
+        return grouped_list
+    }
+
+    suspend fun getAllMedicalReportByUserId(userId: String): List<MedicalReportExtend> {
+        val medicalReportWithPet = repository.getAllMedicalReportByUserId(userId)
+        val medicalReportList = mutableListOf<MedicalReportExtend>()
+        val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        medicalReportWithPet.forEach { report ->
+            val imageMedicalReport =
+                repository.getAllImageMedicalReportByMedicalReportId(report.report.id)
+            val imageUrlList = imageMedicalReport.map { it.imageUrl }
+            println("imageMedicalReport in medical report view model: $imageMedicalReport")
+
+            val parsedDateTime: OffsetDateTime = OffsetDateTime.parse(report.report.createdAt)
+            val formattedDate = parsedDateTime.format(outputFormatter)
+            val medicalReportExtend = MedicalReportExtend(
+                id = report.report.id,
+                title = report.report.title,
+                hospital = report.report.hospital,
+                veterinarian = report.report.veterinarian,
+                description = report.report.description,
+                createdAt = formattedDate,
+                petName = report.petName,
+                images = imageUrlList
+            )
+            medicalReportList.add(medicalReportExtend)
+            println("medicalReportExtend in medical report view model: $medicalReportExtend")
+        }
+        println("medicalReportList in medical report view model: $medicalReportList")
+        return medicalReportList
     }
 
     suspend fun getAllMedicalReportByPetIdList(
@@ -97,6 +188,14 @@ class MedicalReportViewModel(application: Application) : AndroidViewModel(applic
         }
         println("medicalReportList in medical report view model: $medicalReportList")
         return medicalReportList
+    }
+
+    suspend fun getMedicalReportById(id: String?): MedicalReportEntity {
+        return repository.getMedicalReportById(id)
+    }
+
+    suspend fun getAllImageMedicalReportByMedicalReportId(medicalReportId: String): List<ImageMedicalReportEntity> {
+        return repository.getAllImageMedicalReportByMedicalReportId(medicalReportId)
     }
 
 

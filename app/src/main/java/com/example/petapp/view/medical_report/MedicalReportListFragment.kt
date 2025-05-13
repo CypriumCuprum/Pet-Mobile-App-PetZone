@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.petapp.R
-import com.example.petapp.data.model.PetEntity
 import com.example.petapp.data.model.submodel.MedicalReportExtend
 import com.example.petapp.viewmodel.medicalreport.MedicalReportViewModel
 import com.example.petapp.viewmodel.pet.PetViewModel
@@ -26,7 +26,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,7 +35,7 @@ private const val ARG_PARAM2 = "param2"
 private const val PREFS_NAME = "PetAppPrefs"
 private const val KEY_USER_ID = "logged_in_user_id"
 
-class MedicalReportListFragment : Fragment() {
+class MedicalReportListFragment : Fragment(), OnReportItemClickListener {
     private lateinit var editTextStartDate: TextView
     private lateinit var editTextEndDate: TextView
     private lateinit var recyclerViewMedicalReportList: RecyclerView
@@ -58,6 +57,7 @@ class MedicalReportListFragment : Fragment() {
 
     // Placeholder for all reports (replace with actual data fetching)
     private var allMedicalReports: List<MedicalReportExtend> = emptyList()
+    private var clickedReportId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +103,7 @@ class MedicalReportListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         // Initialize adapter with an empty list
-        medicalReportListAdapter = MedicalReportListAdapter(emptyList())
+        medicalReportListAdapter = MedicalReportListAdapter(emptyList(), this)
         recyclerViewMedicalReportList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = medicalReportListAdapter
@@ -112,7 +112,7 @@ class MedicalReportListFragment : Fragment() {
 
     private fun setupButtonClickListeners() {
         btnAddNewMedicalReport.setOnClickListener {
-            navigateToAddEditFragment()
+            navigateToAddFragment()
         }
 
         editTextStartDate.setOnClickListener {
@@ -191,17 +191,31 @@ class MedicalReportListFragment : Fragment() {
             Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
+//        lifecycleScope.launch {
+//            // Fetch all medical reports for the logged-in user
+//            val petList = petViewModel.getPetsForHome(userId)
+//            val petMap: Map<String, String> = petList.associate { it.id to it.name }
+//            println("Pet List: $petList")
+//
+//            allMedicalReports = medicalReportViewModel.getAllMedicalReportByPetIdList(
+//                petIdList = petList.map { it.id },
+//                petName = petMap
+//            )
+//            filterAndDisplayReports()
+//        }
+        //v2
         lifecycleScope.launch {
-            // Fetch all medical reports for the logged-in user
-            val petList = petViewModel.getPetsForHome(userId)
-            val petMap: Map<String, String> = petList.associate { it.id to it.name }
-            println("Pet List: $petList")
-
-            allMedicalReports = medicalReportViewModel.getAllMedicalReportByPetIdList(
-                petIdList = petList.map { it.id },
-                petName = petMap
-            )
-            filterAndDisplayReports()
+//            allMedicalReports = medicalReportViewModel.getAllMedicalReportByUserId(userId)
+            val groupedListItems =
+                medicalReportViewModel.getAllMedicalReportByUserIdWithFilterAndSort(
+                    userId = userId,
+                    numItem = 1,
+                    page = 0,
+                    startDate = "01/01/2000",
+                    endDate = "31/12/2099"
+                ) // Fetch all reports
+//            filterAndDisplayReports()
+            medicalReportListAdapter.updateData(groupedListItems)
         }
         println("All Medical Reports: $allMedicalReports")
 //        allMedicalReports = getDummyMedicalReports() // Use dummy data for now
@@ -293,11 +307,23 @@ class MedicalReportListFragment : Fragment() {
 
 
     // --- Navigation ---
-    private fun navigateToAddEditFragment() {
+    private fun navigateToAddFragment() {
         val fragment = MedicalReportDetailFragment() // Assuming this is your add/edit screen
         val toolbarView = requireActivity().findViewById<View>(R.id.toolbar)
         val toolbarTextView = toolbarView.findViewById<TextView>(R.id.toolbar_title)
         toolbarTextView.text = "Add New Medical Report" // More appropriate title
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame_container, fragment)
+        transaction.addToBackStack(null) // Allows user to navigate back to the list
+        transaction.commit()
+    }
+
+    private fun navigateToEditFragment() {
+        val fragment =
+            MedicalReportDetailEditFragment(clickedReportId) // Assuming this is your add/edit screen
+        val toolbarView = requireActivity().findViewById<View>(R.id.toolbar)
+        val toolbarTextView = toolbarView.findViewById<TextView>(R.id.toolbar_title)
+        toolbarTextView.text = "Edit Medical Report" // More appropriate title
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frame_container, fragment)
         transaction.addToBackStack(null) // Allows user to navigate back to the list
@@ -397,5 +423,13 @@ class MedicalReportListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onReportItemClicked(reportId: String) {
+        this.clickedReportId = reportId
+        Toast.makeText(requireContext(), "Clicked Report ID: $reportId", Toast.LENGTH_SHORT).show()
+        Log.d("MedicalReportList", "Clicked Report ID stored: ${this.clickedReportId}")
+        // Navigate to the detail fragment with the clicked report ID
+        navigateToEditFragment()
     }
 }
