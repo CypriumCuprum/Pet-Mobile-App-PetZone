@@ -36,4 +36,8 @@ interface GPSDeviceDAO {
         status: String = "Offline",
         battery: Int = -1,
     ): Int
+
+    // delete device
+    @Query("DELETE FROM gps_device WHERE id = :id")
+    suspend fun deleteGPSDevice(id: String): Int
 }

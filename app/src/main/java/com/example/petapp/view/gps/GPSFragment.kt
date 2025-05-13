@@ -271,7 +271,7 @@ class GPSFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             updateMapMarkers()
 
             // Move camera to current location
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 16f))
+//            map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 16f))
 
             // Update distance information for all pets
             updatePetsDistance()
@@ -291,13 +291,16 @@ class GPSFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         )
 
         // Add pet markers with actual GPS location data
+        println("Adding pet markers..." + this.pets.size)
         for (pet in pets) {
+            println("Pet ID: ${pet.id}, Name: ${pet.name}")
             val gpsDevice = petToGpsMap[pet.id] ?: continue
 
             // Skip if GPS device has invalid coordinates
             if (gpsDevice.latitude < 0 || gpsDevice.longitude < 0) continue
 
             val petLocation = LatLng(gpsDevice.latitude, gpsDevice.longitude)
+            println("Pet Location: $petLocation")
 
             // Create a marker for this pet
             val marker = map.addMarker(

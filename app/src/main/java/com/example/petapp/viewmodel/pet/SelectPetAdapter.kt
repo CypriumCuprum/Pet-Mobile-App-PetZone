@@ -1,4 +1,4 @@
-package com.example.petapp.viewmodel.gps
+package com.example.petapp.viewmodel.pet
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +13,8 @@ import com.example.petapp.R
 import com.example.petapp.data.model.PetEntity
 import com.google.android.material.card.MaterialCardView
 
-class GPSDetailPetAdapter(private val onPetSelected: (PetEntity) -> Unit) :
-    ListAdapter<PetEntity, GPSDetailPetAdapter.PetViewHolder>(PetDiffCallback()) {
+class SelectPetAdapter(private val onPetSelected: (PetEntity) -> Unit) :
+    ListAdapter<PetEntity, SelectPetAdapter.PetViewHolder>(PetDiffCallback()) {
 
     // Track the currently selected item position
     private var selectedPosition = RecyclerView.NO_POSITION

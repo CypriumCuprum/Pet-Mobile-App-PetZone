@@ -42,10 +42,12 @@
         android:layout_marginStart="10dp"
         android:fontFamily="@font/fredoka_medium"
         android:text="Medical Report"
-        android:textColor="@color/text_black"
+        android:textColor="#163543"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iconPet"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/textViewVeterinarian"
@@ -56,7 +58,10 @@
         android:text="Medical Report"
         android:textColor="@color/text_black"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/iconDoctor"
         app:layout_constraintTop_toBottomOf="@id/textViewPet" />
 
     <TextView
@@ -64,12 +69,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="@font/fredoka_medium"
         android:text="Medical Report"
-        android:textColor="@color/text_black"
+        android:textColor="@color/text_grey"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewPet" />
+
+
+    <ImageView
+        android:id="@+id/iconPet"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewVeterinarian" />
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
+        app:layout_constraintVertical_bias="0.2"
+        app:srcCompat="@drawable/pet" />
 
+    <ImageView
+        android:id="@+id/iconDoctor"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewPet"
+        app:srcCompat="@drawable/icon_doctor" />
 
+    <ImageView
+        android:id="@+id/iconHospital"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewHospital"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@+id/textViewVeterinarian"
+        app:layout_constraintTop_toBottomOf="@id/textViewPet"
+        app:srcCompat="@drawable/icon__hospital_" />
 </androidx.constraintlayout.widget.ConstraintLayout>

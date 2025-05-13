@@ -7,18 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.petapp.R
-import com.example.petapp.data.local.AppDatabase
 import com.example.petapp.data.model.PetEntity
-import com.example.petapp.data.repository.UserRepository
-import com.example.petapp.viewmodel.gps.GPSDetailPetAdapter
+import com.example.petapp.viewmodel.pet.SelectPetAdapter
 import com.example.petapp.viewmodel.pet.PetViewModel
 import com.example.petapp.viewmodel.user.LoginViewModel
 import kotlinx.coroutines.launch
@@ -38,7 +33,7 @@ class DeviceDetailsFragment : Fragment() {
 
     private lateinit var recyclerViewHorizontalYourPet: RecyclerView
     private lateinit var petViewModel: PetViewModel
-    private lateinit var gpsDetailPetAdapter: GPSDetailPetAdapter
+    private lateinit var selectPetAdapter: SelectPetAdapter
     private lateinit var buttonAddDevice: AppCompatButton
     private lateinit var gpsViewModel: GPSDeviceViewModel
     private lateinit var editTextDeviceName: EditText
@@ -117,7 +112,7 @@ class DeviceDetailsFragment : Fragment() {
 
     private fun setupPetRecyclerView() {
         // Initialize the adapter with selection callback
-        gpsDetailPetAdapter = GPSDetailPetAdapter { pet ->
+        selectPetAdapter = SelectPetAdapter { pet ->
             // Handle pet selection
             onPetSelected(pet)
         }
@@ -126,7 +121,7 @@ class DeviceDetailsFragment : Fragment() {
         recyclerViewHorizontalYourPet.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = gpsDetailPetAdapter
+            adapter = selectPetAdapter
         }
 
         println("GPS Pet RecyclerView setup complete with layout manager: ${recyclerViewHorizontalYourPet.layoutManager}")
@@ -148,13 +143,13 @@ class DeviceDetailsFragment : Fragment() {
                 try {
                     val pets = petViewModel.getPetsForHome(userId)
                     println("Loaded pets for GPS device: ${pets.size} pets")
-                    gpsDetailPetAdapter.submitList(pets)
+                    selectPetAdapter.submitList(pets)
 
                     // If we previously had a selected pet, try to reselect it
                     if (selectedPet != null) {
                         val selectedPetIndex = pets.indexOfFirst { it.id == selectedPet?.id }
                         if (selectedPetIndex >= 0) {
-                            gpsDetailPetAdapter.selectPet(selectedPetIndex)
+                            selectPetAdapter.selectPet(selectedPetIndex)
                         }
                     }
                 } catch (e: Exception) {

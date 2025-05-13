@@ -59,6 +59,10 @@ class GPSDeviceRepository(private val gpsDeviceDAO: GPSDeviceDAO) {
         return GPSDeviceResponse(0.0, 0.0, "Offline", "0%")
     }
 
+    // delete gps device by id
+    suspend fun deleteGPSDevice(id: String): Int {
+        return gpsDeviceDAO.deleteGPSDevice(id)
+    }
 
     suspend fun updateGPSDevice(
         id: String,

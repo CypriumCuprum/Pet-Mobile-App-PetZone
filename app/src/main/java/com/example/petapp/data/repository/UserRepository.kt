@@ -22,10 +22,23 @@ class UserRepository(private val dao: UserDAO) {
             password = user.password,
             fullname = user.fullname,
         )
-        val response = apiService.registerUser(req_add_user)
-        if (!response.isSuccessful) {
-            return -1
+        try {
+            val response = apiService.registerUser(req_add_user)
+            if (!response.isSuccessful) {
+                return -1
+            }
+        } catch (e: Exception) {
+            if (user.username == "admin") {
+                dao.register(user)
+            }
+            // Handle the exception if needed
+            e.printStackTrace()
         }
+//        val response = apiService.registerUser(req_add_user)
+//        if (!response.isSuccessful) {
+//
+//            return -1
+//        }
         return dao.register(user)
     }
 

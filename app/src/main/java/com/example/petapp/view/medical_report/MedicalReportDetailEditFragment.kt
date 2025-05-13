@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide // Import Glide
 import com.example.petapp.R
-import com.example.petapp.data.model.MedicalReportEntity
 import com.example.petapp.data.model.PetEntity
 import com.example.petapp.viewmodel.medical_report.MedicalReportImageAdapter
 import com.example.petapp.viewmodel.medical_report.OnImageLongClickListener // IMPORT THE INTERFACE
@@ -35,7 +34,7 @@ private const val PREFS_NAME = "PetAppPrefs"
 private const val KEY_USER_ID = "logged_in_user_id"
 
 // 1. Implement the interface
-class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
+class MedicalReportDetailEditFragment(reportId: String) : Fragment(), OnImageLongClickListener {
     private lateinit var recyclerViewHorizontalYourPet: RecyclerView
     private lateinit var recyclerViewImageMedicalReport: RecyclerView
     private lateinit var buttonAddImageMedicalReport: AppCompatButton
@@ -87,7 +86,7 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_medical_report_detail, container, false)
+        return inflater.inflate(R.layout.fragment_medical_report_detail_edit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.petapp.data.local.dao.GPSDeviceDAO
+import com.example.petapp.data.local.dao.ImageMedicalReportDAO
+import com.example.petapp.data.local.dao.MedicalReportDAO
 import com.example.petapp.data.local.dao.PetDAO
 import com.example.petapp.data.local.dao.PetStatisticDAO
 import com.example.petapp.data.local.dao.Pet_ReminderDAO
@@ -13,6 +15,8 @@ import com.example.petapp.data.local.dao.ReminderDao
 import com.example.petapp.data.local.dao.StatisticTypeDAO
 import com.example.petapp.data.local.dao.UserDAO
 import com.example.petapp.data.model.GPSEntity
+import com.example.petapp.data.model.ImageMedicalReportEntity
+import com.example.petapp.data.model.MedicalReportEntity
 import com.example.petapp.data.model.PetEntity
 import com.example.petapp.data.model.PetStatisticEntity
 import com.example.petapp.data.model.Pet_ReminderEntity
@@ -26,7 +30,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 @Database(
-    entities = [UserEntity::class, PetEntity::class, StatisticTypeEntity::class, PetStatisticEntity::class, ReminderEntity::class, Pet_ReminderEntity::class, GPSEntity::class],
+    entities = [UserEntity::class, PetEntity::class, StatisticTypeEntity::class, PetStatisticEntity::class, ReminderEntity::class, Pet_ReminderEntity::class, GPSEntity::class, MedicalReportEntity::class, ImageMedicalReportEntity::class],
     version = 3,
     exportSchema = false
 )
@@ -38,6 +42,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun petReminderDAO(): Pet_ReminderDAO
     abstract fun petDao(): PetDAO
     abstract fun gpsDeviceDAO(): GPSDeviceDAO
+    abstract fun medicalReportDAO(): MedicalReportDAO
+    abstract fun imageMedicalReportDAO(): ImageMedicalReportDAO
 
 
     // Singleton như thường lệ

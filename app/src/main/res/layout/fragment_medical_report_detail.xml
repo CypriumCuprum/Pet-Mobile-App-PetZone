@@ -153,7 +153,7 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewTitle">
 
                 <EditText
-                    android:id="@+id/editTextveterinary"
+                    android:id="@+id/editTextVeterinary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#E0E0E0"
@@ -263,6 +263,7 @@
                 android:textColor="@color/text_white" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewImageMedicalReport"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginStart="15dp"
