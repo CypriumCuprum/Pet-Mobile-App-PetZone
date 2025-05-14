@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide // Import Glide
 import com.example.petapp.R
-import com.example.petapp.data.model.MedicalReportEntity
 import com.example.petapp.data.model.PetEntity
 import com.example.petapp.viewmodel.medical_report.MedicalReportImageAdapter
 import com.example.petapp.viewmodel.medical_report.OnImageLongClickListener // IMPORT THE INTERFACE
@@ -35,19 +34,21 @@ private const val PREFS_NAME = "PetAppPrefs"
 private const val KEY_USER_ID = "logged_in_user_id"
 
 // 1. Implement the interface
-class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
+class MedicalReportDetailEditFragment(reportId: String?) : Fragment(), OnImageLongClickListener {
+    private var reportId: String? = reportId
     private lateinit var recyclerViewHorizontalYourPet: RecyclerView
     private lateinit var recyclerViewImageMedicalReport: RecyclerView
     private lateinit var buttonAddImageMedicalReport: AppCompatButton
     private lateinit var selectPetAdapter: SelectPetAdapter
     private lateinit var buttonSave: AppCompatButton
+    private lateinit var buttonRemove: AppCompatButton
     private var selectedPet: PetEntity? = null
     private lateinit var petViewModel: PetViewModel
     private lateinit var medicalReportViewModel: MedicalReportViewModel
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
-    private val selectedImageUris = mutableListOf<Pair<String?, Uri>>()
+    private var selectedImageUris = mutableListOf<Pair<String?, Uri>>()
     private lateinit var medicalReportImageAdapter: MedicalReportImageAdapter
 
     private lateinit var editTextTitle: EditText
@@ -73,7 +74,6 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         imagePickerLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri?.let {
-
                     selectedImageUris.add(Pair(null, it))
                     medicalReportImageAdapter.notifyItemInserted(selectedImageUris.size - 1)
                     recyclerViewImageMedicalReport.scrollToPosition(selectedImageUris.size - 1)
@@ -86,7 +86,7 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_medical_report_detail, container, false)
+        return inflater.inflate(R.layout.fragment_medical_report_detail_edit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,17 +97,45 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         buttonAddImageMedicalReport =
             view.findViewById(R.id.buttonAddImageMedicalReport)
         buttonSave = view.findViewById(R.id.buttonSave)
+        buttonRemove = view.findViewById(R.id.buttonRemove)
         editTextTitle = view.findViewById(R.id.editTextTitle)
         editTextVeterinary = view.findViewById(R.id.editTextVeterinary)
         editTextVeterinarian = view.findViewById(R.id.editTextVeterinarian)
         editTextVeterinarianPrescription = view.findViewById(R.id.editTextVeterinarianPrescription)
-
         setupPetRecyclerView()
-        setupImageMedicalReportRecyclerView()
+        loadMedicalReport()
         loadPets()
         onButtonAddImageMedicalReportClick()
         buttonSave.setOnClickListener {
             onButtonSaveClick()
+        }
+        buttonRemove.setOnClickListener {
+            onButtonRemoveClick()
+        }
+    }
+
+    private fun loadMedicalReport() {
+        lifecycleScope.launch {
+            try {
+                val medicalReport = medicalReportViewModel.getMedicalReportById(reportId)
+                selectedPet =
+                    petViewModel.getPetById(
+                        medicalReport.petId
+                    )
+                selectedImageUris =
+                    medicalReportViewModel.getAllImageMedicalReportByMedicalReportId(
+                        medicalReport.id
+                    ).map { Pair(it.id, Uri.parse(it.imageUrl)) }.toMutableList()
+                if (medicalReport != null) {
+                    editTextTitle.setText(medicalReport.title)
+                    editTextVeterinary.setText(medicalReport.hospital)
+                    editTextVeterinarian.setText(medicalReport.veterinarian)
+                    editTextVeterinarianPrescription.setText(medicalReport.description)
+                }
+            } catch (e: Exception) {
+                println("Error loading medical report: ${e.message}")
+            }
+            setupImageMedicalReportRecyclerView()
         }
     }
 
@@ -124,6 +152,21 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         return true
     }
 
+    private fun onButtonRemoveClick() {
+        lifecycleScope.launch {
+            try {
+                medicalReportViewModel.deleteMedicalReport(reportId.toString())
+                Toast.makeText(requireContext(), "Medical report deleted", Toast.LENGTH_SHORT)
+                    .show()
+            } catch (e: Exception) {
+                println("Error deleting medical report: ${e.message}")
+            }
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+
+    }
+
 
     private fun onButtonSaveClick() {
         val selectedPetId = selectedPet?.id
@@ -135,9 +178,11 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
             val stringList: List<Pair<String?, String>> = selectedImageUris.map { pair ->
                 Pair(pair.first, pair.second.toString())
             }
+            println("StringList: $stringList")
             lifecycleScope.launch {
                 try {
                     medicalReportViewModel.saveMedicalReport(
+                        id = reportId,
                         title = title,
                         hospital = veterinary,
                         veterinarian = veterinarian,
@@ -145,14 +190,6 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
                         petId = selectedPetId,
                         imageUrlList = stringList
                     )
-                    println("Medical report saved for pet ID: $selectedPetId")
-                    Toast.makeText(
-                        requireContext(),
-                        "Medical report saved successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // back to previous fragment
-                    requireActivity().supportFragmentManager.popBackStack()
                 } catch (e: Exception) {
                     println("Error saving medical report: ${e.message}")
                 }

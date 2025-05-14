@@ -64,7 +64,6 @@ class AddPetActivity : AppCompatActivity() {
 
     // For avatar image
     private var selectedImageUri: Uri? = null
-    private var savedImagePath: String? = null
 
     // --- ViewModel Setup ---
     private val petAddingViewModel: PetAddingViewModel by viewModels {

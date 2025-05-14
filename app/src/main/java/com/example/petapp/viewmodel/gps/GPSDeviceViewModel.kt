@@ -8,7 +8,6 @@ import com.example.petapp.data.api.GPSDeviceResponse
 import com.example.petapp.data.local.AppDatabase
 import com.example.petapp.data.model.GPSEntity
 import com.example.petapp.data.repository.GPSDeviceRepository
-import com.example.petapp.viewmodel.pet.PetViewModel
 
 class GPSDeviceViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -20,6 +19,10 @@ class GPSDeviceViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     suspend fun getGPSDevicesForPet(petId: String): List<GPSEntity> {
+        val gpsDevices = repository.getAllGPSDevices(petId)
+        gpsDevices.forEach {
+            repository.getGPSDeviceInfobyAPI(it.id)
+        }
         return repository.getAllGPSDevices(petId)
     }
 
@@ -29,6 +32,10 @@ class GPSDeviceViewModel(application: Application) : AndroidViewModel(applicatio
 
     suspend fun getGPSDeviceInfoByAPI(id: String): GPSDeviceResponse {
         return repository.getGPSDeviceInfobyAPI(id)
+    }
+
+    suspend fun deleteGPSDevice(id: String): Int {
+        return repository.deleteGPSDevice(id)
     }
 
 

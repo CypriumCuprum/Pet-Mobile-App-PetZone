@@ -24,10 +24,16 @@ class PetRepository(private val petDAO: PetDAO) {
             weight = petEntity.weight,
             userid = petEntity.userId
         )
-        val response = apiService.createPet(reqAddPet)
-        if (!response.isSuccessful) {
-            return -1
+        try {
+            val response = apiService.createPet(reqAddPet)
+            if (!response.isSuccessful) {
+                return -1
+            }
+        } catch (e: Exception) {
+            // Handle the exception if needed
+            e.printStackTrace()
         }
+
         return petDAO.createPet(petEntity)
     }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.medical_report.MedicalReportDetailFragment">
+    tools:context=".view.medical_report.MedicalReportDetailEditFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -297,20 +297,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <!--            <androidx.appcompat.widget.AppCompatButton-->
-            <!--                android:id="@+id/buttonRemove"-->
-            <!--                android:layout_width="120dp"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:layout_marginStart="50dp"-->
-            <!--                android:layout_toEndOf="@+id/buttonSave"-->
-            <!--                android:background="@drawable/button_rectangle"-->
-            <!--                android:backgroundTint="@color/bg_button_remove"-->
-            <!--                android:text="Remove"-->
-            <!--                android:textAllCaps="false"-->
-            <!--                android:textColor="@color/text_white"-->
-            <!--                android:textSize="18sp"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toEndOf="@id/buttonSave" />-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonRemove"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="50dp"
+                android:layout_toEndOf="@+id/buttonSave"
+                android:background="@drawable/button_rectangle"
+                android:backgroundTint="@color/bg_button_remove"
+                android:text="Remove"
+                android:textAllCaps="false"
+                android:textColor="@color/text_white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/buttonSave" />
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
