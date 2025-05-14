@@ -41,7 +41,6 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
     private lateinit var buttonAddImageMedicalReport: AppCompatButton
     private lateinit var selectPetAdapter: SelectPetAdapter
     private lateinit var buttonSave: AppCompatButton
-    private lateinit var buttonRemove: AppCompatButton
     private var selectedPet: PetEntity? = null
     private lateinit var petViewModel: PetViewModel
     private lateinit var medicalReportViewModel: MedicalReportViewModel
@@ -98,7 +97,6 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         buttonAddImageMedicalReport =
             view.findViewById(R.id.buttonAddImageMedicalReport)
         buttonSave = view.findViewById(R.id.buttonSave)
-        buttonRemove = view.findViewById(R.id.buttonRemove)
         editTextTitle = view.findViewById(R.id.editTextTitle)
         editTextVeterinary = view.findViewById(R.id.editTextVeterinary)
         editTextVeterinarian = view.findViewById(R.id.editTextVeterinarian)
@@ -111,7 +109,6 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         buttonSave.setOnClickListener {
             onButtonSaveClick()
         }
-        onButtonRemoveClick()
     }
 
     private fun checkInputFields(): Boolean {
@@ -127,10 +124,6 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
         return true
     }
 
-    private fun onButtonRemoveClick() {
-
-
-    }
 
     private fun onButtonSaveClick() {
         val selectedPetId = selectedPet?.id
@@ -153,6 +146,13 @@ class MedicalReportDetailFragment : Fragment(), OnImageLongClickListener {
                         imageUrlList = stringList
                     )
                     println("Medical report saved for pet ID: $selectedPetId")
+                    Toast.makeText(
+                        requireContext(),
+                        "Medical report saved successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // back to previous fragment
+                    requireActivity().supportFragmentManager.popBackStack()
                 } catch (e: Exception) {
                     println("Error saving medical report: ${e.message}")
                 }

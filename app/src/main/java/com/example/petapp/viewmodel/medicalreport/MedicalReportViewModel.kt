@@ -18,7 +18,6 @@ import java.util.Locale
 import java.util.UUID
 
 class MedicalReportViewModel(application: Application) : AndroidViewModel(application) {
-    // Add your repository and other properties here
     private val repository: MedicalReportRepository
 
     init {
@@ -61,7 +60,6 @@ class MedicalReportViewModel(application: Application) : AndroidViewModel(applic
 //                }
             }
         } catch (e: Exception) {
-            // Handle the exception
             e.printStackTrace()
         }
     }
@@ -77,11 +75,10 @@ class MedicalReportViewModel(application: Application) : AndroidViewModel(applic
         val dateFormatForQuery = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
         val startDateFormatted =
             LocalDate.parse(startDate, formatterInput).atStartOfDay()
-                .format(dateFormatForQuery) // Parse the start date string to OffsetDateTime
+                .format(dateFormatForQuery)
 
-        // Parse the end date string to OffsetDateTime
         val endDateFormatted = LocalDate.parse(endDate, formatterInput)
-            .plusDays(1) // Add one day to include the end date
+            .plusDays(1)
             .format(dateFormatForQuery)
         val medicalReportWithPet = repository.getAllMedicalReportByUserIdWithFilterAndSort(
             userId,
@@ -198,8 +195,22 @@ class MedicalReportViewModel(application: Application) : AndroidViewModel(applic
         return repository.getAllImageMedicalReportByMedicalReportId(medicalReportId)
     }
 
+    suspend fun deleteMedicalReport(medicalReportId: String): Boolean {
+        try {
+            val imageUriList =
+                repository.getAllImageMedicalReportByMedicalReportId(medicalReportId)
+            imageUriList.forEach { imageUri ->
+                repository.deleteImageMedicalReport(imageUri.id)
+            }
+            repository.deleteMedicalReport(medicalReportId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+        return true
+    }
 
-    // Add your methods to interact with the repository here
+
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

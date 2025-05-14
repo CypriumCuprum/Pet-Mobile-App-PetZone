@@ -35,6 +35,14 @@ class MedicalReportRepository(
         return medicalReportDAO.getAllMedicalReportByUserId(userId)
     }
 
+    suspend fun deleteImageMedicalReport(imageMedicalReportId: String): Int {
+        return imageMedicalReportDAO.deleteImageMedicalReport(imageMedicalReportId)
+    }
+
+    suspend fun deleteMedicalReport(medicalReportId: String): Int {
+        return medicalReportDAO.deleteMedicalReport(medicalReportId)
+    }
+
     suspend fun getAllMedicalReportByUserIdWithFilterAndSort(
         userId: String,
         numItem: Int,

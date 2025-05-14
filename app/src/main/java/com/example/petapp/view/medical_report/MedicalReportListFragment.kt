@@ -34,6 +34,7 @@ private const val ARG_PARAM2 = "param2"
 
 private const val PREFS_NAME = "PetAppPrefs"
 private const val KEY_USER_ID = "logged_in_user_id"
+private const val PAGE_SIZE = 1000
 
 class MedicalReportListFragment : Fragment(), OnReportItemClickListener {
     private lateinit var editTextStartDate: TextView
@@ -58,6 +59,10 @@ class MedicalReportListFragment : Fragment(), OnReportItemClickListener {
     // Placeholder for all reports (replace with actual data fetching)
     private var allMedicalReports: List<MedicalReportExtend> = emptyList()
     private var clickedReportId: String? = null
+
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,10 +110,60 @@ class MedicalReportListFragment : Fragment(), OnReportItemClickListener {
         // Initialize adapter with an empty list
         medicalReportListAdapter = MedicalReportListAdapter(emptyList(), this)
         recyclerViewMedicalReportList.apply {
+//            val linearLayoutManager = LinearLayoutManager(requireContext())
+//            layoutManager = linearLayoutManager
             layoutManager = LinearLayoutManager(requireContext())
             adapter = medicalReportListAdapter
+//            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                    super.onScrolled(recyclerView, dx, dy)
+//                    val visibleItemCount = linearLayoutManager.childCount
+//                    val totalItemCount = linearLayoutManager.itemCount
+//                    val firstVisibleItemPosition =
+//                        linearLayoutManager.findFirstVisibleItemPosition()
+//
+//                    if (!isLoading && !isLastPage) {
+//                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+//                            && firstVisibleItemPosition >= 0
+//                            && totalItemCount >= PAGE_SIZE * (currentPage + 1)
+//                        ) {
+////                            loadMoreMedicalReports()
+//                        }
+//                    }
+//
+//                }
+//            })
         }
     }
+
+//    private fun loadMoreMedicalReports() {
+//        isLoading = true
+//        currentPage++
+//        lifecycleScope.launch {
+//            val userId = sharedPreferences.getString(KEY_USER_ID, null)
+//            if (userId == null) {
+//                Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+//                return@launch
+//            }
+//            val newReports =
+//                medicalReportViewModel.getAllMedicalReportByUserIdWithFilterAndSort(
+//                    userId = userId,
+//                    numItem = PAGE_SIZE,
+//                    page = currentPage,
+//                    startDate = selectedStartDate?.let { displayDateFormat.format(it.time) }
+//                        ?: "01/01/2000",
+//                    endDate = selectedEndDate?.let { displayDateFormat.format(it.time) }
+//                        ?: "31/12/2099"
+//                )
+//            println("New Reports: $newReports")
+//            if (newReports.isEmpty()) {
+//                isLastPage = true
+//            } else {
+//                medicalReportListAdapter.updateData(newReports)
+//            }
+//            isLoading = false
+//        }
+//    }
 
     private fun setupButtonClickListeners() {
         btnAddNewMedicalReport.setOnClickListener {
@@ -119,7 +174,8 @@ class MedicalReportListFragment : Fragment(), OnReportItemClickListener {
             showDatePickerDialog(editTextStartDate) { calendar ->
                 selectedStartDate = calendar
                 editTextStartDate.text = displayDateFormat.format(calendar.time)
-                filterAndDisplayReports() // Re-filter when date changes
+//                filterAndDisplayReports() // Re-filter when date changes
+                loadMedicalReports()
             }
         }
 
@@ -141,7 +197,8 @@ class MedicalReportListFragment : Fragment(), OnReportItemClickListener {
 
                     selectedEndDate = calendar
                     editTextEndDate.text = displayDateFormat.format(calendar.time)
-                    filterAndDisplayReports() // Re-filter when date changes
+//                    filterAndDisplayReports() // Re-filter when date changes
+                    loadMedicalReports()
                 }
             }
         }
@@ -204,15 +261,23 @@ class MedicalReportListFragment : Fragment(), OnReportItemClickListener {
 //            filterAndDisplayReports()
 //        }
         //v2
+        var startDateArg = "01/01/2000"
+        var endDateArg = "31/12/2099"
+        if (selectedStartDate != null) {
+            startDateArg = displayDateFormat.format(selectedStartDate!!.time)
+        }
+        if (selectedEndDate != null) {
+            endDateArg = displayDateFormat.format(selectedEndDate!!.time)
+        }
         lifecycleScope.launch {
 //            allMedicalReports = medicalReportViewModel.getAllMedicalReportByUserId(userId)
             val groupedListItems =
                 medicalReportViewModel.getAllMedicalReportByUserIdWithFilterAndSort(
                     userId = userId,
-                    numItem = 1,
+                    numItem = PAGE_SIZE,
                     page = 0,
-                    startDate = "01/01/2000",
-                    endDate = "31/12/2099"
+                    startDate = startDateArg,
+                    endDate = endDateArg
                 ) // Fetch all reports
 //            filterAndDisplayReports()
             medicalReportListAdapter.updateData(groupedListItems)

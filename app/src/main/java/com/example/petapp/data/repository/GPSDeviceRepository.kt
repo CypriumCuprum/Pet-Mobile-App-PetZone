@@ -1,5 +1,6 @@
 package com.example.petapp.data.repository
 
+import android.widget.Toast
 import com.example.petapp.data.api.ApiService
 import com.example.petapp.data.api.CreateGPSRequest
 import com.example.petapp.data.api.GPSDeviceResponse
@@ -49,24 +50,45 @@ class GPSDeviceRepository(private val gpsDeviceDAO: GPSDeviceDAO) {
 
     // get gps device infor by id through api
     suspend fun getGPSDeviceInfobyAPI(id: String): GPSDeviceResponse {
-        val response = apiService.getGPSDevice(id)
-        if (response.isSuccessful) {
-            // save to local database
-            val gpsDevice = response.body()
-            if (gpsDevice != null) {
-                gpsDeviceDAO.updateGPSDeviceStatus(
-                    id,
-                    gpsDevice.latitude,
-                    gpsDevice.longitude,
-                    gpsDevice.status,
-                    gpsDevice.battery.toInt()
-                )
+
+        try {
+            val response = apiService.getGPSDevice(id)
+            if (response.isSuccessful) {
+                // save to local database
+                val gpsDevice = response.body()
+                if (gpsDevice != null) {
+                    gpsDeviceDAO.updateGPSDeviceStatus(
+                        id,
+                        gpsDevice.latitude,
+                        gpsDevice.longitude,
+                        gpsDevice.status,
+                        gpsDevice.battery.toInt()
+                    )
+                }
+                return response.body() ?: GPSDeviceResponse(0.0, 0.0, "Offline", "0%")
+            } else {
+                println("Error: ${response.errorBody()}")
             }
-            return response.body() ?: GPSDeviceResponse(0.0, 0.0, "Offline", "0%")
-        } else {
-            println("Error: ${response.errorBody()}")
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
         }
-        return GPSDeviceResponse(0.0, 0.0, "Offline", "0%")
+        val gpsDeviceFromLocal = gpsDeviceDAO.getGPSDeviceById(id)
+        gpsDeviceDAO.updateGPSDeviceStatus(
+            id,
+            gpsDeviceFromLocal.latitude,
+            gpsDeviceFromLocal.longitude,
+            "Disconnected",
+            gpsDeviceFromLocal.battery
+        )
+        if (gpsDeviceFromLocal != null) {
+            return GPSDeviceResponse(
+                gpsDeviceFromLocal.latitude,
+                gpsDeviceFromLocal.longitude,
+                "Disconnected",
+                gpsDeviceFromLocal.battery.toString() + "%"
+            )
+        }
+        return GPSDeviceResponse(-1.0, -1.0, "Offline", "-1%")
     }
 
     // delete gps device by id

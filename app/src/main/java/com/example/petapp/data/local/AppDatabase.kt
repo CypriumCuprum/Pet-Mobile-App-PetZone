@@ -23,11 +23,14 @@ import com.example.petapp.data.model.Pet_ReminderEntity
 import com.example.petapp.data.model.ReminderEntity
 import com.example.petapp.data.model.StatisticTypeEntity
 import com.example.petapp.data.model.UserEntity
+import com.example.petapp.data.repository.MedicalReportRepository
+import com.example.petapp.data.repository.PetRepository
 import com.example.petapp.data.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.UUID
+import kotlin.random.Random
 
 @Database(
     entities = [UserEntity::class, PetEntity::class, StatisticTypeEntity::class, PetStatisticEntity::class, ReminderEntity::class, Pet_ReminderEntity::class, GPSEntity::class, MedicalReportEntity::class, ImageMedicalReportEntity::class],
@@ -75,6 +78,14 @@ abstract class AppDatabase : RoomDatabase() {
             CoroutineScope(Dispatchers.IO).launch {
                 val userDao = getInstance(context).userDao()
                 val userRepository = UserRepository(userDao)
+                val petDAO = getInstance(context).petDao()
+                val petRepository = PetRepository(petDAO)
+                val medicalReportDAO = getInstance(context).medicalReportDAO()
+                val imageMedicalReportDAO = getInstance(context).imageMedicalReportDAO()
+                val medicalReportRepository =
+                    MedicalReportRepository(medicalReportDAO, imageMedicalReportDAO)
+
+
                 val admin = UserEntity(
                     id = "admin_Dong1412_okok",
                     username = "admin",
@@ -84,6 +95,44 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 userRepository.register(admin)
                 println("Admin account created: $admin")
+
+                val petDefault = PetEntity(
+                    id = "admin_Default",
+                    name = "Default Pet",
+                    breedName = "Default Breed",
+                    birthDate = "2023-01-01",
+                    gender = "Male",
+                    color = "Black",
+                    height = 10.0F,
+                    weight = 5.0F,
+                    imageUrl = "",
+                    userId = "admin_Dong1412_okok"
+                )
+                val response = petRepository.addPet(petDefault)
+                if (response == -1L) {
+                    println("Failed to create default pet")
+                } else {
+                    println("Default pet created: $petDefault")
+
+                    for (i in 1..5) {
+                        val year = Random.nextInt(2020, 2024)
+                        val medicalReportDefault = MedicalReportEntity(
+                            id = "medical_report_default_$i",
+                            title = "Report $i",
+                            hospital = "Default Hospital",
+                            veterinarian = "Default Vet",
+                            description = "Normal",
+                            createdAt = "$year-10-26T10:00:00Z",
+                            petId = "admin_Default"
+                        )
+                        try {
+                            medicalReportRepository.insertMedicalReport(medicalReportDefault)
+                        } catch (e: Exception) {
+                            println("Failed to create default medical report: ${e.message}")
+                        }
+                    }
+                }
+
             }
         }
     }

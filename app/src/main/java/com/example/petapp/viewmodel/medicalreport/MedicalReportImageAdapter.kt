@@ -9,14 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.petapp.R
 
-// 1. Define an interface for long click
 interface OnImageLongClickListener {
     fun onImageLongClicked(imageUri: Uri)
 }
 
 class MedicalReportImageAdapter(
     private val imageUris: List<Pair<String?, Uri>>,
-    private val onImageLongClickListener: OnImageLongClickListener // 2. Add listener to constructor
+    private val onImageLongClickListener: OnImageLongClickListener
 ) : RecyclerView.Adapter<MedicalReportImageAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -33,10 +32,9 @@ class MedicalReportImageAdapter(
             .error(R.drawable.pet) // Optional
             .into(holder.imageView)
 
-        // 3. Set long click listener
         holder.itemView.setOnLongClickListener {
             onImageLongClickListener.onImageLongClicked(uri)
-            true // Return true to indicate the event was consumed
+            true
         }
     }
 

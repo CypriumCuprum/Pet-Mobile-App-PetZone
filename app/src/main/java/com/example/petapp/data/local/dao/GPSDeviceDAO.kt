@@ -12,11 +12,12 @@ interface GPSDeviceDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGPSDevice(gpsDevice: GPSEntity): Long
 
-    // get all gps devices by pet id
+    @Query("SELECT * FROM gps_device WHERE id = :id")
+    suspend fun getGPSDeviceById(id: String): GPSEntity
+
     @Query("SELECT * FROM gps_device WHERE petid = :petId")
     suspend fun getAllGPSDevices(petId: String): List<GPSEntity>
 
-    // update gps device by id
     @Query("UPDATE gps_device SET name = :name, latitude = :latitude, longitude = :longitude, status = :status, battery = :battery, image_url = :imageUrl WHERE id = :id")
     suspend fun updateGPSDevice(
         id: String,
@@ -37,7 +38,6 @@ interface GPSDeviceDAO {
         battery: Int = -1,
     ): Int
 
-    // delete device
     @Query("DELETE FROM gps_device WHERE id = :id")
     suspend fun deleteGPSDevice(id: String): Int
 }

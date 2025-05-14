@@ -109,7 +109,9 @@ class MedicalReportDetailEditFragment(reportId: String?) : Fragment(), OnImageLo
         buttonSave.setOnClickListener {
             onButtonSaveClick()
         }
-        onButtonRemoveClick()
+        buttonRemove.setOnClickListener {
+            onButtonRemoveClick()
+        }
     }
 
     private fun loadMedicalReport() {
@@ -151,6 +153,18 @@ class MedicalReportDetailEditFragment(reportId: String?) : Fragment(), OnImageLo
     }
 
     private fun onButtonRemoveClick() {
+        lifecycleScope.launch {
+            try {
+                medicalReportViewModel.deleteMedicalReport(reportId.toString())
+                Toast.makeText(requireContext(), "Medical report deleted", Toast.LENGTH_SHORT)
+                    .show()
+            } catch (e: Exception) {
+                println("Error deleting medical report: ${e.message}")
+            }
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+
     }
 
 

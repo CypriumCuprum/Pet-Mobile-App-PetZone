@@ -59,7 +59,6 @@ class GPSDeviceAdapter(
             batteryPercentage.text = device.battery.toString() + "%"
             connectionStatus.text = device.status
 
-            // If device has associated pet ID, get and display the pet name
             coroutineScope.launch {
                 val pet = withContext(Dispatchers.IO) {
                     petRepository.getPetById(device.petId)

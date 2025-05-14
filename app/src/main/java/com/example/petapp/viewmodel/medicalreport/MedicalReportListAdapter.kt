@@ -11,24 +11,21 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-// Define view type constants
 private const val VIEW_TYPE_HEADER = 0
 private const val VIEW_TYPE_ITEM = 1
 
-// Sealed class to represent different list item types
 sealed class ListItem {
     data class HeaderItem(val monthYear: String) : ListItem()
     data class ReportItem(val report: MedicalReportExtend) : ListItem()
 }
 
-// Interface for click events
 interface OnReportItemClickListener {
     fun onReportItemClicked(reportId: String)
 }
 
 class MedicalReportListAdapter(
     private var items: List<ListItem>,
-    private val itemClickListener: OnReportItemClickListener // <--- THAY ĐỔI: Thêm listener
+    private val itemClickListener: OnReportItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val inputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -52,9 +49,7 @@ class MedicalReportListAdapter(
                 if (position != RecyclerView.NO_POSITION) {
                     val item = items[position]
                     if (item is ListItem.ReportItem) {
-                        // --- THAY ĐỔI: Gọi listener ---
                         itemClickListener.onReportItemClicked(item.report.id)
-                        // val reportId = item.report.id // Dòng này không cần thiết nữa nếu bạn chỉ muốn gọi listener
                     }
                 }
             }
@@ -65,7 +60,6 @@ class MedicalReportListAdapter(
         return when (items[position]) {
             is ListItem.HeaderItem -> VIEW_TYPE_HEADER
             is ListItem.ReportItem -> VIEW_TYPE_ITEM
-            // else -> throw IllegalArgumentException("Invalid item type at position $position") // Gỡ bỏ else hoặc xử lý cẩn thận
             else -> {
                 throw IllegalArgumentException("Invalid item type at position $position")
             }
@@ -125,7 +119,7 @@ class MedicalReportListAdapter(
                     e.printStackTrace()
                 }
             }
-            // else -> {} // Không cần thiết nếu getItemViewType đã xử lý các trường hợp
+
             else -> {}
         }
     }

@@ -19,6 +19,10 @@ class GPSDeviceViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     suspend fun getGPSDevicesForPet(petId: String): List<GPSEntity> {
+        val gpsDevices = repository.getAllGPSDevices(petId)
+        gpsDevices.forEach {
+            repository.getGPSDeviceInfobyAPI(it.id)
+        }
         return repository.getAllGPSDevices(petId)
     }
 

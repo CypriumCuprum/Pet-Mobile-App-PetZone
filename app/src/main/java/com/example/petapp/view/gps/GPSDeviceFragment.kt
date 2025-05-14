@@ -183,10 +183,10 @@ class GPSDeviceFragment : Fragment() {
                     "'${device.name}' deleted successfully.",
                     Toast.LENGTH_SHORT
                 ).show()
-                // Option 1: Reload all devices (can be slightly less efficient but simpler)
+                // Reload all devices (can be slightly less efficient but simpler)
                 // loadGPSDevices()
 
-                // Option 2: Update the current list and submit (more efficient for ListAdapter)
+                // Update the current list and submit (more efficient for ListAdapter)
                 val currentList = adapter.currentList.toMutableList()
                 val removed = currentList.remove(device)
                 if (removed) {
